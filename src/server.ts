@@ -1,6 +1,7 @@
 import * as bodyParser from 'body-parser'
 import 'reflect-metadata'
 import logger from './lib/logger'
+import { connect as mongoConnect, getMongoConnection, mongoose } from './lib/mongoose'
 
 import config from 'config'
 import express from 'express'
@@ -23,6 +24,8 @@ const startServer = () => {
 
 const initApp = async () => {
   try {
+    await mongoConnect()
+    await getMongoConnection()
     await startServer()
   }
   catch(error) {

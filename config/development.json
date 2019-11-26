@@ -1,4 +1,8 @@
 {
   "app": "0block-recorder",
-  "port": 3000
+  "port": 3000,
+  "mongodb": {
+    "url": "mongodb://0.0.0.0:27017/block-recorder",
+    "pool_size": 2
+  }
 }
