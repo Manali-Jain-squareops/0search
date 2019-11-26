@@ -1,5 +1,6 @@
 import * as bodyParser from 'body-parser'
 import 'reflect-metadata'
+import logger from './lib/logger'
 
 import config from 'config'
 import express from 'express'
@@ -16,7 +17,7 @@ const startServer = () => {
   app.use(express.json());
 
   app.listen(config.get('port'), () => {
-    console.log(`Server started on port ${config.get('port')}!`)
+    logger.info(`Server started on port ${config.get('port')}!`)
   })
 }
 
@@ -25,7 +26,7 @@ const initApp = async () => {
     await startServer()
   }
   catch(error) {
-    console.log(`Error in initialising App:- ${error}`)
+    logger.error(`Error in initialising App:- ${error}`)
   }
 }
 
