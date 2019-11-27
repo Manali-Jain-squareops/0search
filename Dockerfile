@@ -1,15 +1,19 @@
-FROM mhart/alpine-node:12.4.0
+# [TODO] update to alpine
+FROM node:12
 
-WORKDIR /home/app
+# set our node environment, either development or production
+# defaults to production, compose overrides this to development on build and run
+ARG NODE_ENV=development
+ENV NODE_ENV $NODE_ENV
 
-COPY . /home/app
+# install dependencies first, in a different location for easier app bind mounting for local development
+WORKDIR /opt
 
-RUN rm -rf dist
-
-RUN apk add --no-cache git
-
+COPY package.json Makefile ./
 RUN npm i
+# copy in our source code last, as it changes the most
+COPY . /opt
 
-RUN npm run build
+# RUN make build
 
-CMD ["npm", "start"]
+CMD make dev-server
