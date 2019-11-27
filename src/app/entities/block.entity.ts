@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose'
-import { mongoose } from '../lib/mongoose'
+import { mongoose } from '../../lib/mongoose'
 
 const blockSchema = new Schema({
   hash: {
@@ -25,7 +25,7 @@ const blockSchema = new Schema({
   miner_id: {
     type: String,
     required: true,
-    unique: true
+    index: true
   },
   round_random_seed: {
     type: String,

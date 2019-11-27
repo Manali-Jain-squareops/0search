@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose'
-import { mongoose } from '../lib/mongoose'
+import { mongoose } from '../../lib/mongoose'
 
 const transactionSchema = new Schema({
   hash: {
@@ -12,8 +12,7 @@ const transactionSchema = new Schema({
   },
   version: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   from: {
     type: String
