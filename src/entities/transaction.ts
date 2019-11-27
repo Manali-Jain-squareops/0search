@@ -4,7 +4,16 @@ import { mongoose } from '../lib/mongoose'
 const transactionSchema = new Schema({
   hash: {
     type: String,
-    required: true
+    required: true,
+    unique: true
+  },
+  block_hash: {
+    type: String,
+  },
+  version: {
+    type: String,
+    required: true,
+    unique: true
   },
   from: {
     type: String
@@ -12,25 +21,35 @@ const transactionSchema = new Schema({
   to: {
     type: String
   },
-  amount: {
-    type: String
-  },
-  note: {
-    type: String
-  },
   chain_id: {
+    type: String,
+    required: true
+  },
+  transaction_data: {
+    type: String
+  },
+  transaction_value: {
     type: String
   },
   signature: {
     type: String
   },
-  version: {
+  creation_date: {
+    type: String
+  },
+  transaction_fee: {
+    type: String
+  },
+  transaction_type: {
     type: String
   },
   transaction_output: {
     type: String
   },
   transaction_output_hash: {
+    type: String
+  },
+  transaction_status: {
     type: String
   },
   created_at: {
