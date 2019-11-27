@@ -1,25 +1,24 @@
-import * as bodyParser from 'body-parser'
 import 'reflect-metadata'
 import logger from './lib/logger'
 import { connect as mongoConnect, getMongoConnection, mongoose } from './lib/mongoose'
 
 import config from 'config'
-import express from 'express'
-import cors from 'cors'
+import initExpress from './lib/express'
+import * as http from 'http'
 
 require("babel-core/register");
 require("babel-polyfill");
 
-const app = express()
+function createServer (app) {
+  return http.createServer(app).listen(config.get('port'))
+}
 
 const startServer = () => {
-  app.use(cors())
-  app.use(bodyParser.urlencoded({ extended: true }))
-  app.use(express.json());
+  const app = initExpress()
 
-  app.listen(config.get('port'), () => {
-    logger.info(`Server started on port ${config.get('port')}!`)
-  })
+  const server = createServer(app)
+
+  logger.info(`Server started on port ${config.get('port')}!`)
 }
 
 const initApp = async () => {
@@ -34,5 +33,3 @@ const initApp = async () => {
 }
 
 initApp()
-
-export default app
