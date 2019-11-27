@@ -2,7 +2,7 @@
   "app": "0block-recorder",
   "port": 3000,
   "mongodb": {
-    "url": "mongodb://0.0.0.0:27017/block-recorder",
+    "url": "mongodb://mongo0-0/block-recorder?replicaSet=rs0",
     "pool_size": 2
   }
 }
