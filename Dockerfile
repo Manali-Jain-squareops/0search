@@ -14,6 +14,6 @@ RUN npm i
 # copy in our source code last, as it changes the most
 COPY . /opt
 
-# RUN make build
+RUN make build
 
-CMD make dev-server
+# CMD make dev-server

@@ -6,8 +6,9 @@ volumes:
   mongo-data-0-2:
 
 services:
-  mongo0-0:
+  mongo-0:
     image: mongo
+    container_name: mongo-master
     volumes:
       - mongo-data-0-0:/data/db
     ports:
@@ -15,17 +16,21 @@ services:
     restart: always
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
 
-  mongo1-0:
+  mongo-1:
     image: mongo
     volumes:
       - mongo-data-0-1:/data/db
+    ports:
+      - 27018:27017
     restart: always
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
 
-  mongo2-0:
+  mongo-2:
     image: mongo
     volumes:
       - mongo-data-0-2:/data/db
+    ports:
+      - 27019:27017      
     restart: always
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
 
@@ -36,5 +41,16 @@ services:
     restart: always
     ports:
       - 3000:3000
+    command: make dev-server
+
+  ledger-sync:
+    build: .
+    volumes:
+      - .:/opt
+    restart: always
+    ports:
+      - 3000:3000    
+    command: make dev-ledger-sync
+
 networks:
   default:

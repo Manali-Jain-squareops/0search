@@ -50,8 +50,14 @@ check-install-deps:
 killstart:
 	node --inspect babel-loader.js ./src/server
 
+start-ledger-sync:
+	node --inspect babel-loader.js ./src/sync
+
 dev-server: check-install-deps
 	npx concurrently --names "SERVER,LINT" -c "bgBlue.bold,bgMagenta.bold" "NODE_ENV=development npx nodemon --exec 'make killstart'"
+
+dev-ledger-sync: check-install-deps
+	npx concurrently --names "SERVER,LINT" -c "bgBlue.bold,bgMagenta.bold" "NODE_ENV=development npx nodemon --exec 'make start-ledger-sync'"
 
 dev-lint:
 	npx nodemon --exec 'make lint'

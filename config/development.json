@@ -2,7 +2,23 @@
   "app": "0block-recorder",
   "port": 3000,
   "mongodb": {
-    "url": "mongodb://mongo0-0/block-recorder?replicaSet=rs0",
+    "url": "mongodb://mongo-0/block-recorder?replicaSet=rs0",
     "pool_size": 2
+  },
+  "blockchainConfig": {
+    "miners": [
+      "http://cala.devb.testnet-0chain.net:7071/",
+      "http://calb.devb.testnet-0chain.net:7071/",
+      "http://vira.devb.testnet-0chain.net:7071/",
+      "http://virb.devb.testnet-0chain.net:7071/"
+    ],
+    "sharders": [
+      "http://cala.devb.testnet-0chain.net:7171/",
+      "http://vira.devb.testnet-0chain.net:7171/"
+    ],
+    "chain_id": "0afc093ffb509f059c55478bc1a60351cef7b4e9c008a53a6cc8241ca8617dfe",
+    "clusterName": "0chain-local-cluster",
+    "transaction_timeout": 20,
+    "state ": true
   }
 }
