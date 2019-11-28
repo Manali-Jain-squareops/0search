@@ -9,6 +9,7 @@ const transactionSchema = new Schema({
   },
   block_hash: {
     type: String,
+    required: true
   },
   version: {
     type: String,

@@ -1,4 +1,6 @@
-export interface IBlockRequestData {
+import { ITransactionData, IVerificationTicketData } from './index'
+
+export interface IBlockData {
   version: string;
   creation_date: number;
   magic_block_hash: string;
@@ -13,6 +15,6 @@ export interface IBlockRequestData {
   chain_id: string;
   chain_weight: number;
   prev_verification_tickets: any;
-  transactions: any;
-  verification_tickets: any;
+  transactions: ITransactionData[];
+  verification_tickets: IVerificationTicketData[];
 }

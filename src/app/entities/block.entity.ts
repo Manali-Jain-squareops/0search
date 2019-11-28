@@ -42,7 +42,7 @@ const blockSchema = new Schema({
     type: String
   },
   num_txns: {
-    type: String
+    type: Number
   },
   magic_block_hash: {
     type: String
@@ -57,7 +57,13 @@ const blockSchema = new Schema({
     type: String
   },
   chain_weight: {
-    type: String
+    type: Number
+  },
+  running_txn_count: {
+    type: Number
+  },
+  round_timeout_count: {
+    type: Number
   },
   created_at: {
     type: Date,
