@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose'
-import { mongoose } from '../../lib/mongoose'
+import { mongoose } from '../lib/mongoose'
 
 const verificationTicketSchema = new Schema({
   block_hash: {

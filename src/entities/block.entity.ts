@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose'
-import { mongoose } from '../../lib/mongoose'
+import { mongoose } from '../lib/mongoose'
 
 const blockSchema = new Schema({
   hash: {
