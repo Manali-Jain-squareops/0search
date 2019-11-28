@@ -1,15 +1,17 @@
 import Block from '../entities/block.entity';
-import Transaction from '../entities/transaction.entity';
+
+import { TransactionService } from '../../app/services'
+
 import { mongoose } from "../../lib/mongoose";
-import { IBlockRequestData } from '../interfaces'
+import { IBlockData } from '../interfaces'
 
 import logger from '../../lib/logger'
 
 export class BlockService {
 
-  add = async (requestData: IBlockRequestData) => {
+  add = async (requestData: IBlockData) => {
 
-    const { hash, round } = requestData
+    const { hash, round, transactions } = requestData
 
     const session = await mongoose.startSession()
     await session.startTransaction();
@@ -18,7 +20,8 @@ export class BlockService {
       const opts = { session, returnOriginal: false };
       await Block.create([requestData], opts);
 
-      await Transaction.create(requestData.transactions, opts);
+      const transactionSrv = new TransactionService()
+      await transactionSrv.add(hash, transactions, opts);
 
       await session.commitTransaction();
       await session.endSession();
