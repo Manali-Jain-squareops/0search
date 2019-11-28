@@ -1,6 +1,6 @@
 import Block from '../../entities/block.entity';
 
-import { TransactionService } from './index'
+import { transactionService, verificationTicketService } from './index'
 
 import { mongoose } from "../../lib/mongoose";
 import { IBlockData } from '../../interfaces'
@@ -11,16 +11,21 @@ class BlockService {
 
   add = async (requestData: IBlockData) => {
 
-    const { hash, round, transactions } = requestData
+    const { hash, round, transactions, prev_verification_tickets, verification_tickets } = requestData
 
     const session = await mongoose.startSession()
     await session.startTransaction();
     try {
       const opts = { session, returnOriginal: false };
+      logger.info(`Storing Block data, blockNumber: ${round}`);
       await Block.create([requestData], opts);
 
-      const transactionSrv = new TransactionService()
-      await transactionSrv.add(hash, transactions, opts);
+      logger.info(`Storing transaction data`);
+      await transactionService.add(hash, transactions, opts);
+
+      logger.info(`Storing verification tickets`);
+      const tickets = prev_verification_tickets.concat(verification_tickets);
+      await verificationTicketService.add(hash, tickets, opts);
 
       await session.commitTransaction();
       await session.endSession();
@@ -38,9 +43,9 @@ class BlockService {
     } catch (error) {
       await session.abortTransaction();
       await session.endSession();
-      logger.error(`Error in store block : ${error}`);
+      logger.error(`Error in store block, blockNumber: ${round}, ${error}`);
     }
   }
 }
 
-export default new BlockService()
+export const blockService = new BlockService()

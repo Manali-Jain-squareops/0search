@@ -4,7 +4,7 @@ import { IStatsData } from '../../interfaces'
 
 import logger from '../../lib/logger'
 
-export class StatsService {
+class StatsService {
 
   add = async (stats: IStatsData) => {
     try {
@@ -17,3 +17,5 @@ export class StatsService {
     }
   }
 }
+
+export const statsService = new StatsService()

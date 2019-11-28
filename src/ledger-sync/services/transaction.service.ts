@@ -1,10 +1,9 @@
 import Transaction from '../../entities/transaction.entity';
-
 import { ITransactionData } from '../../interfaces'
 
 import logger from '../../lib/logger'
 
-export class TransactionService {
+class TransactionService {
 
   add = async (block_hash: string, transactions: ITransactionData[], opts) => {
     try {
@@ -23,3 +22,5 @@ export class TransactionService {
     }
   }
 }
+
+export const transactionService = new TransactionService()

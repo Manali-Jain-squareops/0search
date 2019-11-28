@@ -2,7 +2,7 @@ import Block from '../entities/block.entity';
 import of from "await-of"
 import sleep from "sleep"
 import Connector from "./connector";
-import BlockService from "./services/block.service";
+import { blockService } from "./services";
 
 export default class Fetcher {
   private connector: Connector
@@ -26,7 +26,7 @@ export default class Fetcher {
         }
         // Update in database
         // await mongoose.connection.db.collection('blocks').insert(data)
-        await BlockService.add(data)
+        await blockService.add(data)
 
         latestBlockInDb = await this.getLatestBlockNumInDb()
         console.log("==============> Added round: ", latestBlockInDb)

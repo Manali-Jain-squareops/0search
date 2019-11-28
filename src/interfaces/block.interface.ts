@@ -14,7 +14,7 @@ export interface IBlockData {
   signature: string;
   chain_id: string;
   chain_weight: number;
-  prev_verification_tickets: any;
+  prev_verification_tickets: IVerificationTicketData[];
   transactions: ITransactionData[];
   verification_tickets: IVerificationTicketData[];
 }
