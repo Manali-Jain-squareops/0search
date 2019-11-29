@@ -1,4 +1,5 @@
 import of from 'await-of';
+import logger from '../../lib/logger';
 import Responder from '../../lib/expressResponder';
 import { Pagination } from '../../utils/pagination';
 import { validateQuery } from '../../utils/validateQuery';
@@ -42,11 +43,13 @@ class TransactionController {
   static async searchTransaction(req, res) {
     const [sanitizedQuery, error] = await of(validateQuery(req.query, SEARCH_TRANSACTIONS_SUPPORTED_QUERY_PARAMS));
     if (error) {
+      logger.error('Error occurred', error);
       return Responder.operationFailed(res, error.message);
     }
 
     const [params, paginationError] = await of(Pagination.getOffsetAndLimit(req.query.page, req.query.size));
     if (paginationError) {
+      logger.error('Error occurred', paginationError);
       return Responder.operationFailed(res, paginationError.message);
     }
 

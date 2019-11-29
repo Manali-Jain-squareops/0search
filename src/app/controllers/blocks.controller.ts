@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import of from 'await-of';
+import logger from '../../lib/logger';
 import Responder from '../../lib/expressResponder';
 import { BlockService } from '../services/blocks.service';
 import { Pagination } from '../../utils/pagination';
@@ -27,6 +28,7 @@ class BlockController {
   static async latest(req, res) {
     const [blocks, error] = await of(BlockService.getLatestBlock());
     if (error) {
+      logger.error('Unable to fetch latest block', error);
       return Responder.operationFailed(res, 'Unable to latest block');
     }
 
@@ -44,11 +46,13 @@ class BlockController {
   static async getLatestBlocks(req, res) {
     const [params, paginationError] = await of(Pagination.getOffsetAndLimit(req.query.page, req.query.size));
     if (paginationError) {
+      logger.error('Invalid pagination params', paginationError);
       return Responder.operationFailed(res, paginationError.message);
     }
 
     const [latestBlocks, error] = await of(BlockService.getLatestBlocks({ skip: params.skip, limit: params.limit }));
     if (error) {
+      logger.error('Unable to latest block', error);
       return Responder.operationFailed(res, 'Unable to latest block');
     }
 
@@ -68,6 +72,7 @@ class BlockController {
   static async getBlock(req, res) {
     const [sanitizedQuery, error] = await of(validateQuery(req.query, GET_BLOCK_SUPPORTED_QUERY_PARAMS));
     if (error) {
+      logger.error('Error occurred', error);
       return Responder.operationFailed(res, error.message);
     }
 
@@ -78,6 +83,7 @@ class BlockController {
 
     const [params, paginationError] = await of(Pagination.getOffsetAndLimit(req.query.page, req.query.size));
     if (paginationError) {
+      logger.error('Pagination param error', paginationError);
       return Responder.operationFailed(res, paginationError.message);
     }
 
@@ -106,11 +112,13 @@ class BlockController {
   static async searchBlocks(req, res) {
     const [sanitizedQuery, error] = await of(validateQuery(req.query, SEARCH_BLOCK_SUPPORTED_QUERY_PARAMS));
     if (error) {
+      logger.error('Error occurred', error);
       return Responder.operationFailed(res, error.message);
     }
 
     const [params, paginationError] = await of(Pagination.getOffsetAndLimit(req.query.page, req.query.size));
     if (paginationError) {
+      logger.error('Invalid pagination params', paginationError);
       return Responder.operationFailed(res, paginationError.message);
     }
 
