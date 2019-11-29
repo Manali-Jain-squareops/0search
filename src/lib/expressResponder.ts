@@ -1,20 +1,20 @@
-import _ from 'lodash'
-import logger from './logger'
+import _ from 'lodash';
+import logger from './logger';
 
-function Responder () {}
+function Responder() {}
 
 /*
  * This method sends the response to the client.
  */
-function sendResponse (res, status, body = null) {
+function sendResponse(res, status, body = null) {
   if (!res.headersSent) {
     if (body) {
-      return res.status(status).json(body)
+      return res.status(status).json(body);
     }
 
-    return res.status(status).send()
+    return res.status(status).send();
   } else {
-    logger.error('Response already sent.')
+    logger.error('Response already sent.');
   }
 }
 
@@ -23,27 +23,27 @@ function sendResponse (res, status, body = null) {
  * what is the result of the incomming request
  */
 Responder.success = (res, message) => {
-  message = _.isString(message) ? { message } : message
-  return sendResponse(res, 200, message)
-}
+  message = _.isString(message) ? { message } : message;
+  return sendResponse(res, 200, message);
+};
 
 Responder.created = (res, object) => {
-  return sendResponse(res, 201, object)
-}
+  return sendResponse(res, 201, object);
+};
 
-Responder.deleted = (res) => {
-  return sendResponse(res, 204)
-}
+Responder.deleted = res => {
+  return sendResponse(res, 204);
+};
 
 Responder.notFound = (req, res) => {
-  return sendResponse(res, 404, { reason: 'Not Found' })
-}
+  return sendResponse(res, 404, { reason: 'Not Found' });
+};
 
 Responder.operationFailed = (res, reason) => {
-  const status = reason.status
-  reason = reason.message || reason
-  logger.error(reason)
-  return sendResponse(res, status || 400, { reason })
-}
+  const status = reason.status;
+  reason = reason.message || reason;
+  logger.error(reason);
+  return sendResponse(res, status || 400, { reason });
+};
 
-export default Responder
+export default Responder;

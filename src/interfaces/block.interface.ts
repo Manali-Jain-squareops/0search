@@ -1,4 +1,4 @@
-import { ITransactionData, IVerificationTicketData } from './index'
+import { ITransactionData, IVerificationTicketData } from './index';
 
 export interface IBlockData {
   version: string;

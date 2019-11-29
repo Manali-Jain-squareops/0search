@@ -1,14 +1,15 @@
-import * as winston from 'winston'
+import * as winston from 'winston';
 
 const transports = [
   new winston.transports.Console({
     level: 'debug',
     handleExceptions: true
   })
-]
+];
 
 const logger = winston.createLogger({
-  transports, exitOnError: false
-})
+  transports,
+  exitOnError: false
+});
 
-export default logger
+export default logger;

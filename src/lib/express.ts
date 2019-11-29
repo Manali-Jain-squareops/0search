@@ -1,59 +1,59 @@
-import cors from 'cors'
-import morgan from 'morgan'
-import express from 'express'
-import * as bodyParser from 'body-parser'
-import methodOverride from 'method-override'
+import cors from 'cors';
+import morgan from 'morgan';
+import express from 'express';
+import * as bodyParser from 'body-parser';
+import methodOverride from 'method-override';
 
-import logger from './logger'
-import initRoutes from './../app/routes'
-import Responder from './expressResponder'
+import logger from './logger';
+import initRoutes from './../app/routes';
+import Responder from './expressResponder';
 
-const app = express()
+const app = express();
 
-function initMiddleware () {
-  app.use(methodOverride())
+function initMiddleware() {
+  app.use(methodOverride());
 
-  app.use(cors())
+  app.use(cors());
 
-  app.use(bodyParser.json({ limit: '50mb' }))
+  app.use(bodyParser.json({ limit: '50mb' }));
 
-  app.use(morgan('combined', logger.stream))
+  app.use(morgan('combined', logger.stream));
 }
 
-function initPingURL () {
+function initPingURL() {
   app.get('/_ping', (req, res) => {
-    Responder.success(res, { result: 'Ping Received!!!' })
-  })
+    Responder.success(res, { result: 'Ping Received!!!' });
+  });
 }
 
-function catchNotFound () {
-  app.use(Responder.notFound)
+function catchNotFound() {
+  app.use(Responder.notFound);
 }
 
-function catchErrorRoutes () {
+function catchErrorRoutes() {
   app.use((err, req, res, next) => {
-    if (!err) return next()
-    return Responder.operationFailed(res, err)
-  })
+    if (!err) return next();
+    return Responder.operationFailed(res, err);
+  });
 }
 
-function initExpress () {
+function initExpress() {
   // Initialize Middlewares
-  initMiddleware()
+  initMiddleware();
 
   // Initialize Ping URL
-  initPingURL()
+  initPingURL();
 
   // Initialize API Routes
-  initRoutes(app)
+  initRoutes(app);
 
   // Initialize Not Found Route
-  catchNotFound()
+  catchNotFound();
 
   // Initialize Error Routes
-  catchErrorRoutes()
+  catchErrorRoutes();
 
-  return app
+  return app;
 }
 
-export default initExpress
+export default initExpress;

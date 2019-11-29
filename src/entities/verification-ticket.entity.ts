@@ -1,5 +1,5 @@
-import { Schema } from 'mongoose'
-import { mongoose } from '../lib/mongoose'
+import { Schema } from 'mongoose';
+import { mongoose } from '../lib/mongoose';
 
 const verificationTicketSchema = new Schema({
   block_hash: {
@@ -14,8 +14,8 @@ const verificationTicketSchema = new Schema({
   },
   signature: {
     type: String,
-    required: true,
+    required: true
   }
-})
+});
 
-export default mongoose.model('VerificationTicket', verificationTicketSchema)
+export default mongoose.model('VerificationTicket', verificationTicketSchema);

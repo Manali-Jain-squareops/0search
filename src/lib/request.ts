@@ -4,7 +4,8 @@ import request from 'request';
 import logger from './logger';
 
 class Request {
-  private base; headers;
+  private base;
+  private headers;
 
   constructor(uribase, defaultheaders) {
     this.base = uribase;
@@ -48,10 +49,14 @@ class Request {
   }
 
   _prepareRequest(method, uri = {}, query = {}, heads = {}, json) {
-    let url = this._getURL(uri, query), headers = this._getHeaders(heads);
-    let requestObj = { method, url, headers }
-    const body = headers['Content-Type'] == 'application/x-www-form-urlencoded' ? {'form': json} : {'json': json}
-    Object.assign(requestObj, body)
+    let url = this._getURL(uri, query),
+      headers = this._getHeaders(heads);
+    let requestObj = { method, url, headers };
+    const body =
+      headers['Content-Type'] == 'application/x-www-form-urlencoded'
+        ? { form: json }
+        : { json: json };
+    Object.assign(requestObj, body);
     return requestObj;
   }
 
@@ -64,15 +69,13 @@ class Request {
   }
 
   _getQueryString(options) {
-    return _.map(options, (value, key) => `${key}=${encodeURIComponent(value)}`).join("&");
+    return _.map(options, (value, key) => `${key}=${encodeURIComponent(value)}`).join('&');
   }
 
   _call(rq, resolve, reject) {
     request(rq, (error, response, body) => {
-      if(error)
-        return reject(error);
-      if(Math.floor(response.statusCode/100) != 2)
-        return reject(body);
+      if (error) return reject(error);
+      if (Math.floor(response.statusCode / 100) != 2) return reject(body);
       return resolve(body);
     });
   }

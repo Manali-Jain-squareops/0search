@@ -1,5 +1,5 @@
-import { Schema } from 'mongoose'
-import { mongoose } from '../lib/mongoose'
+import { Schema } from 'mongoose';
+import { mongoose } from '../lib/mongoose';
 
 const blockSchema = new Schema({
   hash: {
@@ -10,7 +10,7 @@ const blockSchema = new Schema({
   },
   version: {
     type: String,
-    required: true,
+    required: true
   },
   creation_date: {
     type: Date,
@@ -75,6 +75,6 @@ const blockSchema = new Schema({
     default: Date.now,
     required: true
   }
-})
+});
 
-export default mongoose.model('Block', blockSchema)
+export default mongoose.model('Block', blockSchema);

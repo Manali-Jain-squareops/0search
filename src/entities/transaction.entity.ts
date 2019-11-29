@@ -1,5 +1,5 @@
-import { Schema } from 'mongoose'
-import { mongoose } from '../lib/mongoose'
+import { Schema } from 'mongoose';
+import { mongoose } from '../lib/mongoose';
 
 const transactionSchema = new Schema({
   hash: {
@@ -62,6 +62,6 @@ const transactionSchema = new Schema({
     default: Date.now,
     required: true
   }
-})
+});
 
-export default mongoose.model('Transaction', transactionSchema)
+export default mongoose.model('Transaction', transactionSchema);

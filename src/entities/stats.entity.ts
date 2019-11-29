@@ -1,5 +1,5 @@
-import { Schema } from 'mongoose'
-import { mongoose } from '../lib/mongoose'
+import { Schema } from 'mongoose';
+import { mongoose } from '../lib/mongoose';
 
 const StatsSchema = new Schema({
   block_size: {
@@ -8,7 +8,7 @@ const StatsSchema = new Schema({
   },
   count: {
     type: Number,
-    required: true,
+    required: true
   },
   current_round: {
     type: Number,
@@ -75,6 +75,6 @@ const StatsSchema = new Schema({
     type: Date,
     required: true
   }
-})
+});
 
-export default mongoose.model('Stats', StatsSchema)
+export default mongoose.model('Stats', StatsSchema);
