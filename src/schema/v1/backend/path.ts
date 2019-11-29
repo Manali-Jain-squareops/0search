@@ -11,7 +11,7 @@ export default {
     }
   },
 
-  '/transaction': {
+  '/transaction/{hash}': {
     get: {
       tags: ['Transactions'],
       summary: 'API to get transaction by its hash',

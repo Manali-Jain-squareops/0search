@@ -3,8 +3,8 @@ import * as paths from './path';
 export const definition = {
   openapi: '3.0.0',
   info: {
-    title: 'Backend',
-    description: 'Backend APIs',
+    title: '0Chain Block Recorder',
+    description: '0Chain Block Recorder API Documentation',
     version: '1.0.0'
   },
   paths: paths.default,
