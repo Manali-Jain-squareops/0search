@@ -12,7 +12,7 @@ services:
     volumes:
       - mongo-data-0:/data/db
     restart: always
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
 
   mongo-1:
     image: mongo
@@ -20,7 +20,7 @@ services:
     volumes:
       - mongo-data-1:/data/db
     restart: always
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
 
   mongo-2:
     image: mongo
@@ -28,7 +28,7 @@ services:
     volumes:
       - mongo-data-2:/data/db
     restart: always
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
 
   backend:
     build:
@@ -42,8 +42,7 @@ services:
     restart: always
     ports:
       - 3000:3000
-    command: [ "make", "dev-server" ]
-    # [TODO] health check
+    command: ["make", "dev-server"]
 
   ledger-sync:
     build:
@@ -55,8 +54,4 @@ services:
       - /opt/node_modules
       - .:/opt
     restart: always
-    command: [ "make", "dev-ledger-sync" ]
-    # [TODO] health check
-
-networks:
-  0block-recorder:
+    command: ["make", "dev-ledger-sync"]
