@@ -1,4 +1,4 @@
-// Camelcasing is not done as data is added to the database as received from the SDK
+// Camel casing is not done as data is added to the database as received from the SDK
 interface ITreePathData {
   leaf_index: string;
   nodes: string[];

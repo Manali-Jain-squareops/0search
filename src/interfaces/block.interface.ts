@@ -1,7 +1,7 @@
 import { ITransactionData, IVerificationTicketData } from './index';
 import { IStatsData } from './stats.interface';
 
-// Camelcasing is not done as data is added to the database as received from the SDK for maintaining consistency
+// Camel casing is not done as data is added to the database as received from the SDK for maintaining consistency
 export interface IBlockData {
   version: string;
   creation_date: number;
