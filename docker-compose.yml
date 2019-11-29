@@ -33,6 +33,7 @@ services:
 
   redis:
     image: redis
+    container_name: redis
     command: ['redis-server', '--appendonly', 'yes']
     volumes:
       - redis-data:/data
@@ -73,5 +74,5 @@ services:
     volumes:
       - /opt/node_modules
       - .:/opt
-    restart: always 
+    restart: always
     command: ["make", "dev-worker"]
