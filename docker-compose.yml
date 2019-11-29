@@ -1,56 +1,62 @@
 version: "3"
 
 volumes:
-  mongo-data-0-0:
-  mongo-data-0-1:
-  mongo-data-0-2:
+  mongo-data-0:
+  mongo-data-1:
+  mongo-data-2:
 
 services:
   mongo-0:
     image: mongo
     container_name: mongo-master
     volumes:
-      - mongo-data-0-0:/data/db
-    ports:
-      - 27017:27017
+      - mongo-data-0:/data/db
     restart: always
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
 
   mongo-1:
     image: mongo
+    container_name: mongo-slave-1
     volumes:
-      - mongo-data-0-1:/data/db
-    ports:
-      - 27018:27017
+      - mongo-data-1:/data/db
     restart: always
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
 
   mongo-2:
     image: mongo
+    container_name: mongo-slave-2
     volumes:
-      - mongo-data-0-2:/data/db
-    ports:
-      - 27019:27017      
+      - mongo-data-2:/data/db
     restart: always
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
 
   backend:
-    build: .
+    build:
+      context: .
+      args:
+        - NODE_ENV=development
+    container_name: backend
     volumes:
+      - /opt/node_modules
       - .:/opt
     restart: always
     ports:
       - 3000:3000
-    command: make dev-server
+    command: [ "make", "dev-server" ]
+    # [TODO] health check
 
   ledger-sync:
-    build: .
+    build:
+      context: .
+      args:
+        - NODE_ENV=development
+    container_name: ledger-sync
     volumes:
+      - /opt/node_modules
       - .:/opt
     restart: always
-    ports:
-      - 3000:3000    
-    command: make dev-ledger-sync
+    command: [ "make", "dev-ledger-sync" ]
+    # [TODO] health check
 
 networks:
-  default:
+  0block-recorder:

@@ -39,6 +39,18 @@ install-docker-if-not-already-installed:
 		make install-docker;\
 	fi
 
+clean:
+	@rm -rf ./dist
+
+# Compile Typescript project
+compile:
+	@npx babel . -d ./dist -s \
+		--copy-files  --extensions ".js,.jsx,.ts,.tsx" --verbose \
+		--ignore dist,node_modules,yarn-v1.13.0,__mocks__,chart,node_modules,asdf,postman,test
+
+# Build Typescript project
+build: clean compile
+
 set-up: install-docker-if-not-already-installed
 
 lint:
@@ -61,3 +73,11 @@ dev-ledger-sync: check-install-deps
 
 dev-lint:
 	npx nodemon --exec 'make lint'
+
+start-dependencies:
+	@docker-compose up -d mongo-0 mongo-1 mongo-2
+	@sleep 3
+	@docker exec -it mongo-master mongo --eval 'rs.initiate({"_id":"rs0","members":[{"_id":0,"host":"mongo-0:27017"},{"_id":1,"host":"mongo-1:27017"},{"_id":2,"host":"mongo-2:27017"}]})'
+
+start-dev-services: start-dependencies
+	@docker-compose up -d ledger-sync backend
