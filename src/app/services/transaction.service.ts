@@ -1,4 +1,5 @@
 import Transaction from '../../entities/transaction.entity';
+import Confirmation from '../../entities/confirmation.entity';
 
 /**
  * This class provide service to perform operations regarding chain transactions
@@ -26,11 +27,21 @@ export class TransactionService {
   /**
    * @module TransactionService
    * @function getTransaction To get transaction by its hash
-   * @param {String} blockHash hash of block that needs to be fetched
+   * @param {String} hash hash of transaction that needs to be fetched
    * @returns {Object} transaction: Object
    */
   static async getTransaction(hash) {
-    return Transaction.findOne({ hash });
+    return Transaction.findOne({ hash }).lean();
+  }
+
+  /**
+   * @module TransactionService
+   * @function getTransactionConfirmation To get confirmation of a transaction by its hash
+   * @param {String} blockHash hash of block that needs to be fetched
+   * @returns {Object} Confirmation: Object
+   */
+  static async getTransactionConfirmation(hash) {
+    return Confirmation.findOne({ hash }).lean();
   }
 
   /**

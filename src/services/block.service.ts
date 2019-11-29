@@ -1,23 +1,22 @@
 import Block from '../entities/block.entity';
 
-import { transactionService } from './index'
+import { transactionService } from './index';
 
-import { mongoose } from "../lib/mongoose";
-import { IBlockData } from '../interfaces'
+import { mongoose } from '../lib/mongoose';
+import { IBlockData } from '../interfaces';
 
-import logger from '../lib/logger'
+import logger from '../lib/logger';
 import { statsService } from './stats.service';
 
 class BlockService {
   add = async (requestData: IBlockData) => {
+    const { hash, round, transactions, chain_stats } = requestData;
 
-    const { hash, round, transactions, chain_stats } = requestData
-
-    const session = await mongoose.startSession()
+    const session = await mongoose.startSession();
     await session.startTransaction();
     try {
       const opts = { session, returnOriginal: false };
-      requestData.num_txns = requestData.transactions.length
+      requestData.num_txns = requestData.transactions.length;
 
       logger.info(`Storing Block data, blockNumber: ${round}`);
       await Block.create([requestData], opts);
