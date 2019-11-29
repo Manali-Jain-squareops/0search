@@ -1,4 +1,3 @@
-# [TODO] update to alpine
 FROM node:12
 
 # set our node environment, either development or production

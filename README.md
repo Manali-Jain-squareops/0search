@@ -1,6 +1,6 @@
 # OChain Block Fetcher
 
-This is a module that is responsible for fetching all the relvenat data from the 0chain and store it in a noSql database like mongoDb for faster querying and data caching purposes. 
+This is a module that is responsible for fetching all the relvenat data from the 0chain and store it in a noSql database like mongoDb for faster querying and data caching purposes.
 
 ## Setup
 
@@ -44,6 +44,14 @@ worker          docker-entrypoint.sh make  ...   Up
 mongo-master    /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
 mongo-slave-1   /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
 mongo-slave-2   /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
+```
+
+### Stop Services
+
+To stop all services:
+
+```
+$ docker-compose down
 ```
 
 ### Swagger Documentation
