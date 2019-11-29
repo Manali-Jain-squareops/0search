@@ -87,3 +87,6 @@ start-dependencies:
 
 start-dev-services: start-dependencies
 	@docker-compose up -d ledger-sync backend worker
+
+stop-services:
+	@docker-compose down
