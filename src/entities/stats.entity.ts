@@ -2,6 +2,11 @@ import { Schema } from 'mongoose';
 import { mongoose } from '../lib/mongoose';
 
 const StatsSchema = new Schema({
+  block_hash: {
+    type: String,
+    unique: true,
+    required: true
+  },
   block_size: {
     type: Number,
     required: true
@@ -15,10 +20,6 @@ const StatsSchema = new Schema({
     required: true
   },
   delta: {
-    type: Number,
-    required: true
-  },
-  latest_finalized_round: {
     type: Number,
     required: true
   },
@@ -63,16 +64,15 @@ const StatsSchema = new Schema({
     required: true
   },
   rate_mean: {
-    type: Date,
-    default: Date.now,
+    type: Number,
     required: true
   },
   std_dev: {
-    type: Date,
+    type: Number,
     required: true
   },
   total_txns: {
-    type: Date,
+    type: Number,
     required: true
   }
 });

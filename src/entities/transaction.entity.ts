@@ -52,6 +52,9 @@ const transactionSchema = new Schema({
   transaction_status: {
     type: String
   },
+  confirmation_fetched: {
+    type: Boolean
+  },
   created_at: {
     type: Date,
     default: Date.now,

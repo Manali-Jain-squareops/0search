@@ -65,6 +65,26 @@ const blockSchema = new Schema({
   round_timeout_count: {
     type: Number
   },
+  prev_verification_tickets: [{
+    verifier_id: {
+      type: String,
+      index: true
+    },
+    signature: {
+      type: String,
+    }
+  }],
+  verification_tickets: [{
+    verifier_id: {
+      type: String,
+      required: true,
+      index: true
+    },
+    signature: {
+      type: String,
+      required: true,
+    }
+  }],
   created_at: {
     type: Date,
     default: Date.now,
