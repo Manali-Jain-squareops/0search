@@ -1,4 +1,4 @@
-import { ITransactionData, IVerificationTicketData } from './index'
+import { ITransactionData, IVerificationTicketData } from './index';
 import { IStatsData } from './stats.interface';
 
 // Camelcasing is not done as data is added to the database as received from the SDK for maintaining consistency
@@ -20,5 +20,5 @@ export interface IBlockData {
   prev_verification_tickets: IVerificationTicketData[];
   transactions: ITransactionData[];
   verification_tickets: IVerificationTicketData[];
-  chain_stats: IStatsData
+  chain_stats: IStatsData;
 }

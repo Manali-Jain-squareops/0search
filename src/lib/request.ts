@@ -52,10 +52,7 @@ class Request {
     let url = this._getURL(uri, query),
       headers = this._getHeaders(heads);
     let requestObj = { method, url, headers };
-    const body =
-      headers['Content-Type'] == 'application/x-www-form-urlencoded'
-        ? { form: json }
-        : { json: json };
+    const body = headers['Content-Type'] == 'application/x-www-form-urlencoded' ? { form: json } : { json: json };
     Object.assign(requestObj, body);
     return requestObj;
   }

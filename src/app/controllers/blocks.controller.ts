@@ -8,13 +8,7 @@ import { validateQuery } from '../../utils/validateQuery';
 
 const GET_BLOCK_SUPPORTED_QUERY_PARAMS = ['hash', 'round'];
 
-const SEARCH_BLOCK_SUPPORTED_QUERY_PARAMS = [
-  'hash',
-  'version',
-  'round',
-  'miner_id',
-  'chain_id'
-];
+const SEARCH_BLOCK_SUPPORTED_QUERY_PARAMS = ['hash', 'version', 'round', 'miner_id', 'chain_id'];
 
 /**
  * This class provide controllers to fetch details regarding blocks.

@@ -1,8 +1,8 @@
-import Block from '../entities/block.entity';
-import of from "await-of"
-import Connector from "../lib/0chain-connector";
-import { blockService } from "../services";
+import of from 'await-of';
 import logger from '../lib/logger';
+import Block from '../entities/block.entity';
+import Connector from '../lib/0chain-connector';
+import { blockService } from '../services';
 
 export default class Fetcher {
   private connector: Connector;
@@ -18,13 +18,13 @@ export default class Fetcher {
     while (latestBlockInDb <= latestBlockInChain) {
       const [data, err] = await of(this.connector.getBlockDataByRound(latestBlockInDb + 1));
       if (err) {
-        logger.error("Error fetching data from blockchain", err)
-        throw new Error("Error fetching data from blockchain")
+        logger.error('Error fetching data from blockchain', err);
+        throw new Error('Error fetching data from blockchain');
       }
       // Update in database
-      await blockService.add(data)
+      await blockService.add(data);
 
-      latestBlockInDb = await this.getLatestBlockNumInDb()
+      latestBlockInDb = await this.getLatestBlockNumInDb();
     }
     latestBlockInChain = await this.connector.getBlockNumInChain();
   }
@@ -33,11 +33,11 @@ export default class Fetcher {
     const [block, err] = await of(Block.findOne().sort('-round'));
 
     if (err) {
-      logger.error("Error fetching block from database", err)
-      throw new Error("Error fetching block from database")
+      logger.error('Error fetching block from database', err);
+      throw new Error('Error fetching block from database');
     }
 
-    const currentBlockInDb = block && block.round != undefined ? block.round : 1
-    return currentBlockInDb
+    const currentBlockInDb = block && block.round != undefined ? block.round : 1;
+    return currentBlockInDb;
   }
 }

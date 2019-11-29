@@ -4,10 +4,7 @@ import { Pagination } from '../../utils/pagination';
 import { validateQuery } from '../../utils/validateQuery';
 import { TransactionService } from '../services/transaction.service';
 
-const SEARCH_TRANSACTIONS_SUPPORTED_QUERY_PARAMS = [
-  'hash',
-  'block_hash'
-];
+const SEARCH_TRANSACTIONS_SUPPORTED_QUERY_PARAMS = ['hash', 'block_hash'];
 
 /**
  * This class provide controllers to fetch details regarding transactions.
@@ -31,7 +28,8 @@ class TransactionController {
       });
     }
 
-    return Responder.success(res, transaction);
+    const confirmation = await TransactionService.getTransactionConfirmation(req.params.hash);
+    return Responder.success(res, Object.assign(transaction, { confirmation }));
   }
 
   /**

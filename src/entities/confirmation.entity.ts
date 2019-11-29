@@ -1,5 +1,5 @@
-import { Schema } from 'mongoose'
-import { mongoose } from '../lib/mongoose'
+import { Schema } from 'mongoose';
+import { mongoose } from '../lib/mongoose';
 
 const confirmationSchema = new Schema({
   hash: {
@@ -10,11 +10,11 @@ const confirmationSchema = new Schema({
   },
   version: {
     type: String,
-    required: true,
+    required: true
   },
   block_hash: {
     type: String,
-    required: true,
+    required: true
   },
   creation_date: {
     type: Date,
@@ -23,7 +23,7 @@ const confirmationSchema = new Schema({
   round: {
     type: Number,
     required: true,
-    index: true,
+    index: true
   },
   round_random_seed: {
     type: String,
@@ -51,6 +51,6 @@ const confirmationSchema = new Schema({
       type: Array
     }
   }
-})
+});
 
-export default mongoose.model('Confirmation', confirmationSchema)
+export default mongoose.model('Confirmation', confirmationSchema);

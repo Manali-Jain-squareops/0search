@@ -1,11 +1,8 @@
 import Block from '../entities/block.entity';
-
-import { transactionService } from './index';
-
-import { mongoose } from '../lib/mongoose';
-import { IBlockData } from '../interfaces';
-
 import logger from '../lib/logger';
+import { IBlockData } from '../interfaces';
+import { mongoose } from '../lib/mongoose';
+import { transactionService } from './index';
 import { statsService } from './stats.service';
 
 class BlockService {
