@@ -20,5 +20,9 @@
     "clusterName": "0chain-local-cluster",
     "transaction_timeout": 20,
     "state ": true
+  },
+  "pagination": {
+    "default_page": 1,
+    "default_page_size": 10
   }
 }
