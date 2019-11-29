@@ -1,19 +1,23 @@
 import Block from '../../entities/block.entity';
 
-import { transactionService, verificationTicketService } from './index'
+import { transactionService, verificationTicketService } from './index';
 
-import { mongoose } from "../../lib/mongoose";
-import { IBlockData } from '../../interfaces'
+import { mongoose } from '../../lib/mongoose';
+import { IBlockData } from '../../interfaces';
 
-import logger from '../../lib/logger'
+import logger from '../../lib/logger';
 
 class BlockService {
-
   add = async (requestData: IBlockData) => {
+    const {
+      hash,
+      round,
+      transactions,
+      prev_verification_tickets,
+      verification_tickets
+    } = requestData;
 
-    const { hash, round, transactions, prev_verification_tickets, verification_tickets } = requestData
-
-    const session = await mongoose.startSession()
+    const session = await mongoose.startSession();
     await session.startTransaction();
     try {
       const opts = { session, returnOriginal: false };
@@ -30,22 +34,20 @@ class BlockService {
       await session.commitTransaction();
       await session.endSession();
 
-      logger.info(
-        `Block data store successfully, blockNumber: ${round}`
-      );
+      logger.info(`Block data store successfully, blockNumber: ${round}`);
 
       return {
         status: 200,
         response: {
-          blockHash: hash.toString(),
-        },
+          blockHash: hash.toString()
+        }
       };
     } catch (error) {
       await session.abortTransaction();
       await session.endSession();
       logger.error(`Error in store block, blockNumber: ${round}, ${error}`);
     }
-  }
+  };
 }
 
-export const blockService = new BlockService()
+export const blockService = new BlockService();
