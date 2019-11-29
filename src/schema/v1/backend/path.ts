@@ -57,22 +57,6 @@ export default {
           }
         },
         {
-          name: 'from',
-          in: 'query',
-          description: 'Search transaction by `from` client',
-          schema: {
-            type: 'string'
-          }
-        },
-        {
-          name: 'to',
-          in: 'query',
-          description: 'Search transaction by `to` client',
-          schema: {
-            type: 'string'
-          }
-        },
-        {
           name: 'page',
           in: 'query',
           description: 'Page number',

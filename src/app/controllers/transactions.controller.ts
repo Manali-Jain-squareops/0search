@@ -6,9 +6,7 @@ import { TransactionService } from '../services/transaction.service';
 
 const SEARCH_TRANSACTIONS_SUPPORTED_QUERY_PARAMS = [
   'hash',
-  'block_hash',
-  'from',
-  'to'
+  'block_hash'
 ];
 
 /**
