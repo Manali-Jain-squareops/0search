@@ -16,15 +16,14 @@ export const fetchTransactionDetails = (connector: Connector) => {
     async (job: any, jobDone: any) => {
       const txnHash = job.data.transactionHash;
       logger.info(`Fetching transactions details for transaction: ${txnHash}`);
-      const [txnDetails, err] = await of(connector.getTransactionDetails(txnHash));
 
+      const [txnDetails, err] = await of(connector.getTransactionDetails(txnHash));
       if (err) {
         logger.error(`Error fetching txnDetails of ${txnHash} from sdk`, err);
         return jobDone(err);
       }
 
       const [_, error] = await of(transactionService.addConfirmationDetails(txnHash, txnDetails.confirmation));
-
       if (error) {
         logger.error(`Error updating txnDetails of txn: ${txnHash}`, err);
         return jobDone(error);

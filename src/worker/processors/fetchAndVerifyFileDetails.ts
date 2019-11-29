@@ -16,8 +16,8 @@ export const fetchAndVerifyFileDetails = (connector: Connector) => {
     async (job: any, jobDone: any) => {
       const fileMetadata = job.data.fileMetadata;
       logger.info(`Verifying authenticity of the file: ${fileMetadata.actual_file_hash}`);
-      const [verified, err] = await of(connector.verifyFile(fileMetadata));
 
+      const [verified, err] = await of(connector.verifyFile(fileMetadata));
       if (err) {
         logger.error(`Error verifying file ${fileMetadata.actual_file_hash} from sdk`, err);
         return jobDone(err);
@@ -26,7 +26,6 @@ export const fetchAndVerifyFileDetails = (connector: Connector) => {
       fileMetadata.verified = verified;
 
       const [_, error] = await of(fileService.add(fileMetadata));
-
       if (error) {
         logger.error(`Error adding file details in DB: ${fileMetadata.actual_file_hash}`, err);
         return jobDone(error);

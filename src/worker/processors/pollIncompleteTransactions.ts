@@ -8,8 +8,8 @@ import { FETCH_INCOMPLETE_TRANSACTIONS_PROCESS } from '../constants';
 export const pollIncompleteTransactions = () => {
   fetchIncompleteTransactions.process(FETCH_INCOMPLETE_TRANSACTIONS_PROCESS, async (job: any, jobDone: any) => {
     logger.info('Fetching incomplete transactions ===>');
+    
     const [transactions, err] = await of(transactionService.getIncompleteTransactions());
-
     if (err) {
       logger.error('Error fetching incomplete transactions', err);
       return jobDone(err);
