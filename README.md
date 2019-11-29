@@ -40,10 +40,11 @@ Output should be like:
 -------------------------------------------------------------------------------
 backend         docker-entrypoint.sh make  ...   Up      0.0.0.0:3000->3000/tcp
 ledger-sync     docker-entrypoint.sh make  ...   Up
-worker          docker-entrypoint.sh make  ...   Up
 mongo-master    /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
 mongo-slave-1   /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
 mongo-slave-2   /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
+redis           docker-entrypoint.sh redis ...   Up      6379/tcp
+worker          docker-entrypoint.sh make  ...   Up
 ```
 
 ### Stop Services
@@ -135,3 +136,5 @@ As per discussion I have assumed that a storage related transaction will have a 
 As per this assumption I have designed the logic to query file metadata from a storage related transaction and store it in the database.
 
 Another problem I faced was to query the blockchain to verify a file payload received in a transaction (Creating wallets and allocations did not work either). Also, I could get the correct way of doing this. Hopefully we can improve this feature after we have a concrete idea of SDK's usage for what we want to achieve. As of now all my logic is based on the above assumption.
+
+I have also not added GET APIs to fetch file metadata due to above-mentioned reasons. It could be easily added once we fix the file fetching process.
