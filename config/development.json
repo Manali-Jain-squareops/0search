@@ -5,6 +5,7 @@
     "url": "mongodb://mongo-0/block-recorder?replicaSet=rs0",
     "pool_size": 2
   },
+  "redis_url": "redis://redis:6379",
   "blockchainConfig": {
     "miners": [
       "http://cala.devb.testnet-0chain.net:7071/",
@@ -24,5 +25,11 @@
   "pagination": {
     "default_page": 1,
     "default_page_size": 10
+  },
+  "worker": {
+    "reattempts": 5,
+    "backoffDelay": 5000,
+    "pollingDuration": 5000,
+    "jobConcurrency": 10
   }
 }
