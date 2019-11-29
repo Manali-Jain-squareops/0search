@@ -1,35 +1,32 @@
-import Block from '../../entities/block.entity';
+import Block from '../entities/block.entity';
 
-import { transactionService, verificationTicketService } from './index';
+import { transactionService } from './index'
 
-import { mongoose } from '../../lib/mongoose';
-import { IBlockData } from '../../interfaces';
+import { mongoose } from "../lib/mongoose";
+import { IBlockData } from '../interfaces'
 
-import logger from '../../lib/logger';
+import logger from '../lib/logger'
+import { statsService } from './stats.service';
 
 class BlockService {
   add = async (requestData: IBlockData) => {
-    const {
-      hash,
-      round,
-      transactions,
-      prev_verification_tickets,
-      verification_tickets
-    } = requestData;
 
-    const session = await mongoose.startSession();
+    const { hash, round, transactions, chain_stats } = requestData
+
+    const session = await mongoose.startSession()
     await session.startTransaction();
     try {
       const opts = { session, returnOriginal: false };
+      requestData.num_txns = requestData.transactions.length
+
       logger.info(`Storing Block data, blockNumber: ${round}`);
       await Block.create([requestData], opts);
 
       logger.info(`Storing transaction data`);
       await transactionService.add(hash, transactions, opts);
 
-      logger.info(`Storing verification tickets`);
-      const tickets = prev_verification_tickets.concat(verification_tickets);
-      await verificationTicketService.add(hash, tickets, opts);
+      logger.info(`Updating chain data`);
+      await statsService.update(hash, chain_stats, opts);
 
       await session.commitTransaction();
       await session.endSession();
@@ -45,7 +42,7 @@ class BlockService {
     } catch (error) {
       await session.abortTransaction();
       await session.endSession();
-      logger.error(`Error in store block, blockNumber: ${round}, ${error}`);
+      logger.error(`Error in storing block, blockNumber: ${round}, ${error}`);
     }
   };
 }
