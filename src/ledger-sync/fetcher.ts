@@ -1,8 +1,9 @@
 import of from 'await-of';
+import Boom from '@hapi/boom';
 import logger from '../lib/logger';
+import { blockService } from '../services';
 import Block from '../entities/block.entity';
 import Connector from '../lib/0chain-connector';
-import { blockService } from '../services';
 
 export default class Fetcher {
   private connector: Connector;
@@ -19,7 +20,7 @@ export default class Fetcher {
       const [data, err] = await of(this.connector.getBlockDataByRound(latestBlockInDb + 1));
       if (err) {
         logger.error('Error fetching data from blockchain', err);
-        throw new Error('Error fetching data from blockchain');
+        throw Boom.badRequest('Error fetching data from blockchain');
       }
       // Update in database
       await blockService.add(data);
@@ -34,7 +35,7 @@ export default class Fetcher {
 
     if (err) {
       logger.error('Error fetching block from database', err);
-      throw new Error('Error fetching block from database');
+      throw Boom.badRequest('Error fetching block from database');
     }
 
     const currentBlockInDb = block && block.round != undefined ? block.round : 1;
