@@ -1,14 +1,15 @@
-import express from 'express'
+import express from 'express';
+import TransactionController from '../controllers/transactions.controller';
 
-import TransactionController from '../controllers/transactions.controller'
+/**
+ * @function initTransactionsRoutes To initialize '/transactions' routes
+ * @returns {Router} Returns transactions router
+ */
+const initTransactionsRoutes = () => {
+  const TransactionsRouter = express.Router();
 
-function initTransactionRoutes () {
-  const TransactionRouter = express.Router()
+  TransactionsRouter.get('/search', TransactionController.searchTransaction);
+  return TransactionsRouter;
+};
 
-  TransactionRouter.get('/', TransactionController.list)
-  TransactionRouter.get('/:transactionId', TransactionController.get)
-
-  return TransactionRouter
-}
-
-export default initTransactionRoutes
+export default initTransactionsRoutes;
