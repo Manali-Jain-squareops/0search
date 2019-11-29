@@ -1,10 +1,10 @@
 version: "3"
 
 volumes:
+  redis-data:
   mongo-data-0:
   mongo-data-1:
   mongo-data-2:
-  redis-data:
 
 services:
   mongo-0:
