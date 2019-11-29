@@ -4,6 +4,7 @@ volumes:
   mongo-data-0:
   mongo-data-1:
   mongo-data-2:
+  redis-data:
 
 services:
   mongo-0:
@@ -30,6 +31,13 @@ services:
     restart: always
     entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
 
+  redis:
+    image: redis
+    command: ['redis-server', '--appendonly', 'yes']
+    volumes:
+      - redis-data:/data
+    restart: always
+
   backend:
     build:
       context: .
@@ -55,3 +63,15 @@ services:
       - .:/opt
     restart: always
     command: ["make", "dev-ledger-sync"]
+
+  worker:
+    build:
+      context: .
+      args:
+        - NODE_ENV=development
+    container_name: worker
+    volumes:
+      - /opt/node_modules
+      - .:/opt
+    restart: always 
+    command: ["make", "dev-worker"]
