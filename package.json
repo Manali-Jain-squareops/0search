@@ -14,6 +14,7 @@
     "project_name": "check-install-dependencies.js"
   },
   "dependencies": {
+    "@hapi/boom": "^8.0.1",
     "await-of": "^1.2.0",
     "body-parser": "^1.19.0",
     "check-dependencies": "^1.1.0",
@@ -24,6 +25,7 @@
     "js-client": "git+https://git@github.com/0chain/js-client-sdk.git",
     "lodash": "^4.17.15",
     "method-override": "^3.0.0",
+    "mongo-sanitize": "^1.0.1",
     "mongoose": "^5.7.12",
     "morgan": "^1.9.1",
     "reflect-metadata": "^0.1.13",
