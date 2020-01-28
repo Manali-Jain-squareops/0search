@@ -51,6 +51,16 @@ export class TransactionService {
    * @returns {Object} transactions: Array<Object>; Number: total number of transactions
    */
   static async searchTransactions({ query, skip, limit }) {
+    if (Object.keys(query).includes('metadata')) {
+      const searchText = query.metadata
+      delete query.metadata
+      query['$or'] = [
+        { 'metadata.Name': searchText },
+        { 'metadata.Path': searchText },
+        { 'metadata.Hash': searchText },
+        { 'metadata.Size': searchText }
+      ]
+    }
     const transactions = await Transaction.find(query)
       .lean()
       .sort({ created_at: -1 })

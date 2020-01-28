@@ -10,11 +10,13 @@ class TransactionService {
     try {
       transactions.map(txn => {
         txn.confirmation_fetched = false;
+        if (txn.transaction_data.includes("MetaData")){
+          txn.metadata = JSON.parse(txn.transaction_data).MetaData
+        }
         return (txn.block_hash = block_hash);
       });
 
-      await Transaction.create(transactions, opts);
-
+      await Transaction.create(transactions, opts)
       logger.info(`Transaction Stored successfully, block hash: ${block_hash}`);
     } catch (error) {
       logger.error(`Error in store transactions for block hash : ${block_hash}`, error);

@@ -13,7 +13,7 @@ const blockSchema = new Schema({
     required: true
   },
   creation_date: {
-    type: Date,
+    type: Number,
     required: true
   },
   round: {

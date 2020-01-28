@@ -5,7 +5,7 @@ import { Pagination } from '../../utils/pagination';
 import { validateQuery } from '../../utils/validateQuery';
 import { TransactionService } from '../services/transaction.service';
 
-const SEARCH_TRANSACTIONS_SUPPORTED_QUERY_PARAMS = ['hash', 'block_hash'];
+const SEARCH_TRANSACTIONS_SUPPORTED_QUERY_PARAMS = ['hash', 'block_hash', 'metadata'];
 
 /**
  * This class provide controllers to fetch details regarding transactions.
@@ -41,6 +41,37 @@ class TransactionController {
    * @returns {undefined} Sends paginated response with details of transactions
    */
   static async searchTransaction(req, res) {
+    const [sanitizedQuery, error] = await of(validateQuery(req.query, SEARCH_TRANSACTIONS_SUPPORTED_QUERY_PARAMS));
+    if (error) {
+      logger.error('Error occurred', error);
+      return Responder.operationFailed(res, error.message);
+    }
+
+    const [params, paginationError] = await of(Pagination.getOffsetAndLimit(req.query.page, req.query.size));
+    if (paginationError) {
+      logger.error('Error occurred', paginationError);
+      return Responder.operationFailed(res, paginationError.message);
+    }
+
+    const { transactions, count } = await TransactionService.searchTransactions({
+      query: sanitizedQuery,
+      skip: params.skip,
+      limit: params.limit
+    });
+
+    const metadata = Pagination.preparePaginationMetaData(req.query.page, req.query.size, count);
+    return Responder.success(res, { metadata, content: transactions });
+  }
+
+  /**
+   * @module TransactionController
+   * @function getTransactionsByBlockHash To search transactions
+   * @param {Object} req Express request object
+   * @param {Object} res Express response object
+   * @returns {undefined} Sends paginated response with a list of transactions
+   */
+  static async getTransactionsByBlockHash(req, res) {
+    const transactionsList = []
     const [sanitizedQuery, error] = await of(validateQuery(req.query, SEARCH_TRANSACTIONS_SUPPORTED_QUERY_PARAMS));
     if (error) {
       logger.error('Error occurred', error);

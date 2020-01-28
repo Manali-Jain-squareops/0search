@@ -16,4 +16,5 @@ export interface ITransactionData {
   transaction_output_hash: string;
   transaction_status: string;
   confirmation_fetched: boolean;
+  metadata: object;
 }
