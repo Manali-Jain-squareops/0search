@@ -55,10 +55,15 @@ export class TransactionService {
       const searchText = query.metadata
       delete query.metadata
       query['$or'] = [
-        { 'metadata.Name': searchText },
-        { 'metadata.Path': searchText },
-        { 'metadata.Hash': searchText },
-        { 'metadata.Size': searchText }
+        { 'metadata.MetaData.Name': searchText },       //Searching via 'name' field
+        { 'metadata.MetaData.Path': searchText },       //Searching via 'path' field
+        { 'metadata.MetaData.PathHash': searchText },   //Searching via 'path Hash' field
+        { 'metadata.MetaData.Hash': searchText },       //Searching via 'transaction hash' field
+        { 'client_id': searchText },                    //Searching via 'from' field
+        { 'to_client_id': searchText },                 //Searching via 'to' field
+        { 'parsed_output.blobber_id': searchText },     //Searching via 'blobber Id' field
+        { 'parsed_output.blobbers.id': searchText },    //Searching via 'blobbers' field
+        { 'parsed_output.allocation_id': searchText }   //Searching via 'allocation Id' field
       ]
     }
     const transactions = await Transaction.find(query)

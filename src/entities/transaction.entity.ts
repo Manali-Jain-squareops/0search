@@ -15,10 +15,10 @@ const transactionSchema = new Schema({
     type: String,
     required: true
   },
-  from: {
+  client_id: {
     type: String
   },
-  to: {
+  to_client_id: {
     type: String
   },
   chain_id: {
@@ -56,6 +56,9 @@ const transactionSchema = new Schema({
     type: Boolean
   },
   metadata: {
+    type: Object
+  },
+  parsed_output: {
     type: Object
   },
   created_at: {

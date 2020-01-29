@@ -3,8 +3,8 @@ export interface ITransactionData {
   hash: string;
   block_hash: string;
   version: string;
-  from: string;
-  to: string;
+  client_id: string;
+  to_client_id: string;
   chain_id: string;
   transaction_data: string;
   transaction_value: string;
@@ -17,4 +17,5 @@ export interface ITransactionData {
   transaction_status: string;
   confirmation_fetched: boolean;
   metadata: object;
+  parsed_output: object;
 }
