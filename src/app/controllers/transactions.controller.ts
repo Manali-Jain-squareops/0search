@@ -46,6 +46,11 @@ class TransactionController {
       logger.error('Error occurred', error);
       return Responder.operationFailed(res, error.message);
     }
+    
+    if (!(req.query.page && req.query.size)) {
+      req.query.page = 1
+      req.query.size = 100
+    }
 
     const [params, paginationError] = await of(Pagination.getOffsetAndLimit(req.query.page, req.query.size));
     if (paginationError) {
@@ -71,11 +76,16 @@ class TransactionController {
    * @returns {undefined} Sends paginated response with a list of transactions
    */
   static async getTransactionsByBlockHash(req, res) {
-    const transactionsList = []
+
     const [sanitizedQuery, error] = await of(validateQuery(req.query, SEARCH_TRANSACTIONS_SUPPORTED_QUERY_PARAMS));
     if (error) {
       logger.error('Error occurred', error);
       return Responder.operationFailed(res, error.message);
+    }
+
+    if (!(req.query.page && req.query.size)) {
+      req.query.page = 1
+      req.query.size = 100
     }
 
     const [params, paginationError] = await of(Pagination.getOffsetAndLimit(req.query.page, req.query.size));
