@@ -80,6 +80,11 @@ class BlockController {
     if (!blocks || !blocks[0]) {
       return Responder.operationFailed(res, { message: 'No matching blocks found' });
     }
+    
+    if (!(req.query.page && req.query.size)) {
+      req.query.page = 1
+      req.query.size = 100
+    }
 
     const [params, paginationError] = await of(Pagination.getOffsetAndLimit(req.query.page, req.query.size));
     if (paginationError) {
