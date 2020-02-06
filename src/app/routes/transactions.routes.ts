@@ -9,6 +9,7 @@ const initTransactionsRoutes = () => {
   const TransactionsRouter = express.Router();
 
   TransactionsRouter.get('/search', TransactionController.searchTransaction);
+  TransactionsRouter.get('/block-hash', TransactionController.getTransactionsByBlockHash);
   return TransactionsRouter;
 };
 

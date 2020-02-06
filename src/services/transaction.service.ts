@@ -6,15 +6,29 @@ import Confirmation from '../entities/confirmation.entity';
 import { ITransactionData, IConfirmationData } from '../interfaces';
 
 class TransactionService {
+  IsJsonString = (str: string) => {
+    try {
+      JSON.parse(str);
+    } catch (error) {
+      return false;
+    }
+    return true;
+  }
+
   add = async (block_hash: string, transactions: ITransactionData[], opts) => {
     try {
       transactions.map(txn => {
         txn.confirmation_fetched = false;
+        if (this.IsJsonString(txn.transaction_data)) {
+          txn.metadata = JSON.parse(txn.transaction_data)
+        }
+        if (this.IsJsonString(txn.transaction_output)) {
+          txn.parsed_output = JSON.parse(txn.transaction_output)
+        }
         return (txn.block_hash = block_hash);
       });
 
-      await Transaction.create(transactions, opts);
-
+      await Transaction.create(transactions, opts)
       logger.info(`Transaction Stored successfully, block hash: ${block_hash}`);
     } catch (error) {
       logger.error(`Error in store transactions for block hash : ${block_hash}`, error);
