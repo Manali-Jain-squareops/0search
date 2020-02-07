@@ -44,7 +44,6 @@ mongo-master    /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
 mongo-slave-1   /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
 mongo-slave-2   /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
 redis           docker-entrypoint.sh redis ...   Up      6379/tcp
-worker          docker-entrypoint.sh make  ...   Up
 ```
 
 ### Stop Services
@@ -65,10 +64,6 @@ Open `http://localhost:3000/docs/` on browser to view
 
 This service is responsible for fetching all the chain, blocks and transaction related data and storing it in the database. However it does not fetch confirmation details of a transaction or file details as these will take time if fetched in the same flow. This is done by a parallel service called worker described next.
 
-### Redis Based Worker
-
-This service is responsible for fetching confirmation details of a transaction, identifying storage related transaction, verifying file data in the blockchain and storing it in the database. This run parallel to the ledger-sync service.
-
 ### Mongo Replica Set
 
 A replica set is a group of mongod instances that maintain the same data set. A replica set contains several data bearing nodes and optionally one arbiter node.
@@ -83,6 +78,7 @@ Below-mentioned REST APIs are implemented:
 
 - `/transaction/:hash`: To query a transaction by its hash
 - `/transactions/search`: API to search transactions by providing multiple query params
+- `/transactions/block-hash`: API to get transactions by a block's hash.
 - `/blocks`: API to get paginated list of latest blocks
 - `/blocks/search`: To search blocks by providing multiple query params
 - `/block`: Get a block by its hash or round
@@ -99,42 +95,65 @@ I have designed this codebase in such a way as to minimize dependencies between 
 - `Caching`: To cache response of APIs for faster GET operations and less Database queries
 - `Unit Testing`: To be implemented
 - `Integration Testing`: To be implemented
-- `Worker Test Cases`: To be implemented
 - `Proper Exception Handling`: Needed to be made more fault tolerant
 - `Performance Test`: REST API load testing hasnt been done yet.
 - `Data Caching in database`: Feature that will be implemented
 - `Re-evaluate Database Indexes`: Needed to be improved
 
-### File related data storage limitations
+### Metadata storage in the database for a transaction.
 
-As per discussion I have assumed that a storage related transaction will have a payload like this:
+Currently, the metadata of a transaction is getting stored in the database as a single field of object type.
+Metadata field will be different for different types of transactions like for storage related transactions, it would be like 
 
 ```
 {
-  "actual_file_hash": "12b56872cbd2749a7ef3d67344aa6c22df2548ac",
-  "actual_file_size": 43963193,
-  "actual_thumbnail_hash": "",
-  "actual_thumbnail_size": 0,
-  "content_hash": "f2f4a83ade4739808cce450e4015d1365c0fe3bd",
-  "custom_meta": "",
-  "encrypted_key": "",
-  "hash": "8f75e4b6b9510af1d2f3fe34a0a93c721dd0a641ddb9fd698c600470abf08982",
-  "lookup_hash": "53bbdc22761c135cd9657af2ae8e3a853dcbf4b316f612d3fc0f4a0141cbb5e4",
-  "merkle_root": "f91f417d7f386ea735bee94b78badf63df619ad5038acebeccdc95b06980c4a6",
-  "mimetype": "video/mp4",
-  "name": "abcd.mp4",
-  "num_of_blocks": 336,
-  "path": "/abcd.mp4",
-  "path_hash": "53bbdc22761c135cd9657af2ae8e3a853dcbf4b316f612d3fc0f4a0141cbb5e4",
-  "size": 21981597,
-  "thumbnail_hash": "",
-  "thumbnail_size": 0,
-  "type": "f"
+  "Name": "env",
+  "Type": "f",
+  "Path": "/env",
+  "PathHash": "d664a2440eac5af4849e17fd8d900068756e0740ba686b16f386971c61d35c11",
+  "LookupHash": "d664a2440eac5af4849e17fd8d900068756e0740ba686b16f386971c61d35c11",
+  "Hash": "c9b6acc0cc94cbd0eae30d644b83ad44e4540288",
+  "MimeType": "application/octet-stream",
+  "Size": 2666,
+  "ThumbnailSize": 0,
+  "ThumbnailHash": "",
+  "EncryptedKey": ""
 }
 ```
+and for locking related transactions, metadata will have these attributes:
 
-As per this assumption I have designed the logic to query file metadata from a storage related transaction and store it in the database.
+```
+  {
+    "name": "lock",
+    "input": {
+      "duration": "1h0m"
+    }
+  }
+```
+for allocation transactions:
 
-Another problem I faced was to query the blockchain to verify a file payload received in a transaction (Creating wallets and allocations did not work either). Also, I could get the correct way of doing this. Hopefully we can improve this feature after we have a concrete idea of SDK's usage for what we want to achieve. As of now all my logic is based on the above assumption.
+```
+{
+  "name":"new_allocation_request"
+  "input":{
+    "data_shards": 2
+    "expiration_date": 1588833876
+    "owner_id": "a72e411c814dadff04e31c0914564044f6a8  ef  2a59a3de2a1d15db9df3769a9d"
+    "owner_public_key": "8c50545aaf2df8a52adc3db71ccc  628088c54035227c5b8470a6cdd26ad48f0b50a85d1fd8388e1b8a061b6cf3fbab2cff03236074b830069c011fbeaa15b092"
+    "parity_shards": 2
+    "size": 2147483648
+}
+```
+The search is also updated as per the metadata coming from the blockchain in every transaction.
+A search in metadata field can be done by calling the search api with ```metadata```  query params. Search can be done on the following fields:
 
-I have also not added GET APIs to fetch file metadata due to above-mentioned reasons. It could be easily added once we fix the file fetching process.
+```
+1. File name
+2. Path name
+3. Path hash
+4. Content hash
+5. From
+6. To
+7. Blobber Id
+8. Allocation Id
+```
