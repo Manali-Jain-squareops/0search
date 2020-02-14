@@ -13,12 +13,12 @@ export const pollMissingBlocks = (connector: Connector) => {
 
     const fetcher = new Fetcher(connector);
     let latestBlockInDB = await fetcher.getLatestBlockNumInDb();
-    let blockRound = 2;
+    let blockRound = 1;
 
     while (blockRound <= latestBlockInDB) {
 
       if (!(await checkBlockPresentInDB(blockRound))) {
-        
+
         logger.info(`Fetching block details for block round: ${blockRound}`);
         const [blockDetails, err] = await of(connector.getBlockDataByRound(blockRound));
 
