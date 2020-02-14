@@ -57,7 +57,7 @@ export class TransactionService {
       query['$or'] = [
         { 'metadata.MetaData.Name': searchText },       //Searching via 'name' field
         { 'metadata.MetaData.Path': searchText },       //Searching via 'path' field
-        { 'metadata.MetaData.PathHash': searchText },   //Searching via 'path Hash' field
+        { 'metadata.MetaData.LookupHash': searchText },   //Searching via 'lookup Hash' field
         { 'metadata.MetaData.Hash': searchText },       //Searching via 'transaction hash' field
         { 'client_id': searchText },                    //Searching via 'from' field
         { 'to_client_id': searchText },                 //Searching via 'to' field
