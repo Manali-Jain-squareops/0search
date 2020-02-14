@@ -1,12 +1,12 @@
 import logger from '../lib/logger';
 import { initProcessors } from './processors';
-import { fetchIncompleteTransactionsJob } from './jobs';
+import { fetchMissingBlocksJob } from './jobs';
 
 export class Worker {
   public run() {
-    logger.info('Starting Transaction details fetching');
+    logger.info('Starting Block details fetching');
 
     initProcessors();
-    fetchIncompleteTransactionsJob();
+    fetchMissingBlocksJob();
   }
 }
