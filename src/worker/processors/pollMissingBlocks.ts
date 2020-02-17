@@ -13,10 +13,9 @@ export const pollMissingBlocks = (connector: Connector) => {
 
     const fetcher = new Fetcher(connector);
     let latestBlockInDB = await fetcher.getLatestBlockNumInDb();
-    let blockRound = 2;
+    let blockRound = latestBlockInDB;
 
-    while (blockRound <= latestBlockInDB) {
-
+    while (blockRound > 1) {
       if (!(await checkBlockPresentInDB(blockRound))) {
 
         logger.info(`Fetching block details for block round: ${blockRound}`);
@@ -30,7 +29,7 @@ export const pollMissingBlocks = (connector: Connector) => {
         }
         logger.info(`Fetched block details for block: ${blockRound}`);
       }
-      blockRound += 1
+      blockRound -= 1
     }
     // latestBlockInDB = await fetcher.getLatestBlockNumInDb();
     return jobDone();
