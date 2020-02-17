@@ -22,16 +22,14 @@ export const pollMissingBlocks = (connector: Connector) => {
         const [blockDetails, err] = await of(connector.getBlockDataByRound(blockRound));
 
         await blockService.add(blockDetails);
-
         if (err) {
           logger.error(`Error fetching blockDetails of ${blockRound} from sdk`, err);
-          return jobDone(err);
+          continue
         }
         logger.info(`Fetched block details for block: ${blockRound}`);
       }
       blockRound -= 1
     }
-    // latestBlockInDB = await fetcher.getLatestBlockNumInDb();
     return jobDone();
   });
 };
