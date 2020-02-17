@@ -4,6 +4,7 @@ import logger from '../lib/logger';
 import { blockService } from '../services';
 import Block from '../entities/block.entity';
 import Connector from '../lib/0chain-connector';
+import { checkBlockPresentInDB } from '../worker/processors/pollMissingBlocks'
 
 export default class Fetcher {
   private connector: Connector;
@@ -17,17 +18,18 @@ export default class Fetcher {
     let latestBlockInDb = await this.getLatestBlockNumInDb();
 
     while (latestBlockInDb <= latestBlockInChain) {
-      const [data, err] = await of(this.connector.getBlockDataByRound(latestBlockInDb + 1));
+      const [data, err] = await of(this.connector.getBlockDataByRound(latestBlockInChain));
       if (err) {
         logger.error('Error fetching data from blockchain', err);
         throw Boom.badRequest('Error fetching data from blockchain');
       }
       // Update in database
-      await blockService.add(data);
-
-      latestBlockInDb = await this.getLatestBlockNumInDb();
+      if (!(await checkBlockPresentInDB(latestBlockInChain))){
+        await blockService.add(data);
+        latestBlockInDb = await this.getLatestBlockNumInDb();
+      }
+      latestBlockInChain = await this.connector.getBlockNumInChain();
     }
-    latestBlockInChain = await this.connector.getBlockNumInChain();
   }
 
   async getLatestBlockNumInDb(): Promise<number> {
