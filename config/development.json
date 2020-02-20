@@ -29,11 +29,15 @@
   "worker": {
     "reattempts": 5,
     "backoffDelay": 5000,
-    "pollingDuration": 5000,
-    "jobConcurrency": 10
+    "pollingDuration": 3000,
+    "jobConcurrency": 10,
+    "startFromBlock": 2
   },
-  "pagination": {
-    "default_page": 1,
-    "default_page_size": 10
+  "scanner": {
+    "reattempts": 5,
+    "backoffDelay": 5000,
+    "pollingDuration": 5000,
+    "jobConcurrency": 10,
+    "scanLimit": 200
   }
 }

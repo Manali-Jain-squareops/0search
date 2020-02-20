@@ -5,31 +5,31 @@ import Connector from '../../lib/0chain-connector';
 import logger from '../../lib/logger';
 import { FETCH_MISSING_BLOCKS_PROCESS } from '../constants';
 import Block from '../../entities/block.entity';
-import Fetcher from '../../ledger-sync/fetcher';
 import config from 'config'
+import Fetcher from '../../ledger-sync/fetcher';
 
 export const pollMissingBlocks = (connector: Connector) => {
   fetchMissingBlocksQueue.process(FETCH_MISSING_BLOCKS_PROCESS, async (job: any, jobDone: any) => {
-    logger.info('Fetching missing blocks ===>');
 
     const fetcher = new Fetcher(connector);
     let latestBlockInDB = await fetcher.getLatestBlockNumInDb();
-    let latestBlockInChain = await connector.getBlockNumInChain();
-    let blockRound = config.get('worker.startFromBlock');
+    let blockRound = latestBlockInDB;
+    let scanCount = config.get('scanner.scanLimit');
 
-    while (latestBlockInDB < latestBlockInChain) {
+    logger.info('Fetching missing blocks ===>');
+
+    while (scanCount) {
       if (!(await checkBlockPresentInDB(blockRound))) {
         logger.info(`Fetching block details for block round: ${blockRound}`);
         const [blockDetails, err] = await of(connector.getBlockDataByRound(blockRound));
         try {
           await blockService.add(blockDetails);
-        }
-        catch (error) {
+        } catch (error) {
           continue
         }
-        logger.info(`Fetched block details for block: ${blockRound}`);
+        scanCount -= 1
       }
-      blockRound += 1
+      blockRound -= 1
     }
     return jobDone();
   });

@@ -76,3 +76,16 @@ services:
       - .:/opt
     restart: always
     command: ["make", "dev-worker"]
+  
+  scanner:
+    build:
+      context: .
+      args:
+        - NODE_ENV=development
+    container_name: scanner
+    volumes:
+      - /opt/node_modules
+      - .:/opt
+    restart: always
+    command: ["make", "dev-scanner"]
+

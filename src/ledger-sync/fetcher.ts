@@ -24,9 +24,14 @@ export default class Fetcher {
       }
       // Update in database
       if (!(await checkBlockPresentInDB(latestBlockInChain))){
-        await blockService.add(data);
-        latestBlockInDb = await this.getLatestBlockNumInDb();
+        try {
+          await blockService.add(data);
+        }
+        catch (error) {
+          continue
+        }
       }
+      latestBlockInDb = await this.getLatestBlockNumInDb();
       latestBlockInChain = await this.connector.getBlockNumInChain();
     }
   }
