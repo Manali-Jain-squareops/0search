@@ -46,7 +46,7 @@ class TransactionController {
       logger.error('Error occurred', error);
       return Responder.operationFailed(res, error.message);
     }
-    
+
     if (!(req.query.page && req.query.size)) {
       req.query.page = 1
       req.query.size = 100
@@ -102,6 +102,19 @@ class TransactionController {
 
     const metadata = Pagination.preparePaginationMetaData(req.query.page, req.query.size, count);
     return Responder.success(res, { metadata, content: transactions });
+  }
+
+  /**
+   * @module TransactionController
+   * @function signTransaction To sign transactions
+   * @param {Object} req Express request object
+   * @param {Object} res Express response object
+   * @returns {undefined} Sends paginated response with a list of transactions
+   */
+  static async signTransaction(req, res) {
+    const { transactionHash, private_key } = req.body
+    const response = await TransactionService.signTransaction(transactionHash, private_key);
+    return Responder.success(res, { signedTransaction: response });
   }
 }
 

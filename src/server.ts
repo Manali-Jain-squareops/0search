@@ -5,6 +5,7 @@ import * as http from 'http';
 import logger from './lib/logger';
 import initExpress from './lib/express';
 import { connect as mongoConnect, getMongoConnection } from './lib/mongoose';
+import bls from 'bls-wasm'
 
 require('babel-core/register');
 require('babel-polyfill');
@@ -22,6 +23,7 @@ const startServer = () => {
 
 const initApp = async () => {
   try {
+    await bls.init(bls.BN254)
     await mongoConnect();
     await getMongoConnection();
     await startServer();

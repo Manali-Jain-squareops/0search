@@ -1,5 +1,6 @@
 import Transaction from '../../entities/transaction.entity';
 import Confirmation from '../../entities/confirmation.entity';
+import { sign } from '../../utils/bls'
 
 /**
  * This class provide service to perform operations regarding chain transactions
@@ -86,4 +87,16 @@ export class TransactionService {
     const count = await Transaction.find(query).count();
     return { transactions, count };
   }
+
+  /**
+   * @module TransactionService
+   * @function signTransaction To get sign transaction by its hash
+   * @param {String} hash hash of block that needs to be fetched
+   * @returns {Object} Confirmation: Object
+   */
+  static async signTransaction(transaction, private_key) {
+    const signedTransaction = sign(transaction, private_key)
+    return signedTransaction
+  }
 }
+
