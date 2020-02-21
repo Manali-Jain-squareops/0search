@@ -109,12 +109,24 @@ class TransactionController {
    * @function signTransaction To sign transactions
    * @param {Object} req Express request object
    * @param {Object} res Express response object
-   * @returns {undefined} Sends paginated response with a list of transactions
+   * @returns {undefined} Sends a signed string of a transaction hash
    */
-  static async signTransaction(req, res) {
+  static signTransaction(req, res) {
     const { transactionHash, private_key } = req.body
-    const response = await TransactionService.signTransaction(transactionHash, private_key);
+    const response = TransactionService.signTransaction(transactionHash, private_key);
     return Responder.success(res, { signedTransaction: response });
+  }
+
+  /**
+   * @module TransactionController
+   * @function signTransaction To get public and private keys using bls
+   * @param {Object} req Express request object
+   * @param {Object} res Express response object
+   * @returns {undefined} Sends an object with public and private keys
+   */
+  static getKeys(req, res) {
+    const response = TransactionService.getPublicAndPrivateKeys();
+    return Responder.success(res, { response });
   }
 }
 

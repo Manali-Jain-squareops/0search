@@ -9,6 +9,7 @@ const initTransactionRoutes = () => {
   const TransactionRouter = express.Router();
 
   TransactionRouter.get('/:hash', TransactionController.getTransaction);
+  TransactionRouter.post('/get-keys', TransactionController.getKeys);
   TransactionRouter.post('/sign-transaction', TransactionController.signTransaction);
   return TransactionRouter;
 };

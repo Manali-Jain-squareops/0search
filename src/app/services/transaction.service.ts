@@ -1,6 +1,6 @@
 import Transaction from '../../entities/transaction.entity';
 import Confirmation from '../../entities/confirmation.entity';
-import { sign } from '../../utils/bls'
+import { sign, getKeys } from '../../utils/bls'
 
 /**
  * This class provide service to perform operations regarding chain transactions
@@ -94,9 +94,18 @@ export class TransactionService {
    * @param {String} hash hash of block that needs to be fetched
    * @returns {Object} Confirmation: Object
    */
-  static async signTransaction(transaction, private_key) {
+  static signTransaction(transaction, private_key) {
     const signedTransaction = sign(transaction, private_key)
     return signedTransaction
+  }
+
+  /**
+   * @module TransactionService
+   * @function getKeys To get public and private keys for a wallet
+   * @returns {Object} keys: Object
+   */
+  static getPublicAndPrivateKeys() {
+    return getKeys()
   }
 }
 

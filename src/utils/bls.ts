@@ -8,6 +8,17 @@ export const sign = (transactionHash: any, private_key: any) => {
 	return sig.serializeToHexStr();
 }
 
+export const getKeys = () => {
+	const blsSecret = new bls.SecretKey();
+	blsSecret.setByCSPRNG()
+	const privateKey = blsSecret.serializeToHexStr()
+	const publicKey = blsSecret.getPublicKey()
+	return {
+		private_key: privateKey,
+		public_key: publicKey.serializeToHexStr()
+	}
+}
+
 export const byteToHexString = (uint8arr: any) => {
 	if (!uint8arr) {
 		return '';
