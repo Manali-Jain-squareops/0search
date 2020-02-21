@@ -44,6 +44,7 @@ mongo-master    /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
 mongo-slave-1   /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
 mongo-slave-2   /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
 redis           docker-entrypoint.sh redis ...   Up      6379/tcp
+worker          docker-entrypoint.sh make  ...   Up                 
 ```
 
 ### Stop Services
@@ -62,7 +63,22 @@ Open `http://localhost:3000/docs/` on browser to view
 
 ### Ledger Sync
 
-This service is responsible for fetching all the chain, blocks and transaction related data and storing it in the database. However it does not fetch confirmation details of a transaction or file details as these will take time if fetched in the same flow. This is done by a parallel service called worker described next.
+This service is responsible for fetching all the chain, blocks and transaction related data and storing it in the database. It starts fetching the latest finalized blocks along with the transactions from the chain and stores in the database. It checks the latest and put it in the database. A worker keeps running in the background to add the missing blocks in the database described next. 
+
+### Worker
+
+This service also fetches the blocks and transactions from the chain and put it in the database similarly to the ledger-sync. The only difference is it starts fetching blocks from round number 2 till it catches the blockchain. This is how, the missing blocks gets added in the database.
+We have defined a config variable which can be updated to the number from where the worker should start.
+
+### Scanner
+
+Scanner service also runs in the background and do a periodic scan of missing blocks by going towards the worker from the ledger-sync. It basically fills the gap in between the 2. It checks the latest block in the database (fetched and added by the ledger-sync) and then start going backwards and checks each round of block if it is present in the database or not and adds it in the database. We have defined a scanner scan limit variable in the config which can be changed to define the span of missing blocks to be fetched.
+
+We need to start this service explicitly by running the command:
+```docker-compose up -d scanner```
+
+It will start the scanner service and the logs can be seen by doing a 
+```docker-compose logs -f scanner``` 
 
 ### Mongo Replica Set
 
