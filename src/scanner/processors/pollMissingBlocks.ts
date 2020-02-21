@@ -22,11 +22,16 @@ export const pollMissingBlocks = (connector: Connector) => {
       if (!(await checkBlockPresentInDB(blockRound))) {
         logger.info(`Fetching block details for block round: ${blockRound}`);
         const [blockDetails, err] = await of(connector.getBlockDataByRound(blockRound));
-        try {
-          await blockService.add(blockDetails);
-        } catch (error) {
+        if (err) {
+          logger.info(`Error getting block ${blockRound} from the database`)
           continue
         }
+        const [response, error] = await of(blockService.add(blockDetails));
+        if (error) {
+          logger.info(`Error adding block ${blockRound} in the database`)
+          continue
+        }
+        logger.info(`Current Scan Count ===> ${scanCount}`);
         scanCount -= 1
       }
       blockRound -= 1

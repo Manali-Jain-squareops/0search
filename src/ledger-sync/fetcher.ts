@@ -23,11 +23,10 @@ export default class Fetcher {
         continue
       }
       // Update in database
-      if (!(await checkBlockPresentInDB(latestBlockInChain))){
-        try {
-          await blockService.add(data);
-        }
-        catch (error) {
+      if (!(await checkBlockPresentInDB(latestBlockInChain))) {
+        const [response, error] = await of(blockService.add(data));
+        if (error) {
+          logger.error('Error fetching data from blockchain', error);
           continue
         }
       }
