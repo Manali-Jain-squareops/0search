@@ -12,10 +12,10 @@ export const getKeys = () => {
 	const blsSecret = new bls.SecretKey();
 	blsSecret.setByCSPRNG()
 	const privateKey = blsSecret.serializeToHexStr()
-	const publicKey = blsSecret.getPublicKey()
+	const publicKey = blsSecret.getPublicKey().serializeToHexStr()
 	return {
 		private_key: privateKey,
-		public_key: publicKey.serializeToHexStr()
+		public_key: publicKey
 	}
 }
 

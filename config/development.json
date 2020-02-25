@@ -8,17 +8,29 @@
   "redis_url": "redis://redis:6379",
   "blockchainConfig": {
     "miners": [
-      "http://cala.devb.testnet-0chain.net:7071/",
-      "http://calb.devb.testnet-0chain.net:7071/",
-      "http://vira.devb.testnet-0chain.net:7071/",
-      "http://virb.devb.testnet-0chain.net:7071/"
+      "http://38.32.112.213:31071/",
+      "http://38.32.112.213:31072/",
+      "http://38.32.112.213:31073/",
+      "http://38.32.112.213:31074/",
+      "http://38.32.112.213:31075/",
+      "http://38.32.112.213:31076/",
+      "http://38.32.112.213:31077/",
+      "http://38.32.112.213:31078/",
+      "http://38.32.112.213:31079/"
     ],
     "sharders": [
-      "http://cala.devb.testnet-0chain.net:7171/",
-      "http://vira.devb.testnet-0chain.net:7171/"
+      "http://38.32.112.213:31171/",
+      "http://38.32.112.213:31172/",
+      "http://38.32.112.213:31173/",
+      "http://38.32.112.213:31174/",
+      "http://38.32.112.213:31175/",
+      "http://38.32.112.213:31176/",
+      "http://38.32.112.213:31177/",
+      "http://38.32.112.213:31178/",
+      "http://38.32.112.213:31179/"
     ],
     "chain_id": "0afc093ffb509f059c55478bc1a60351cef7b4e9c008a53a6cc8241ca8617dfe",
-    "clusterName": "0chain-local-cluster",
+    "clusterName": "one",
     "transaction_timeout": 20,
     "state ": true
   },
@@ -38,6 +50,6 @@
     "backoffDelay": 5000,
     "pollingDuration": 5000,
     "jobConcurrency": 10,
-    "scanLimit": 200
+    "scanLimit": 50
   }
 }
