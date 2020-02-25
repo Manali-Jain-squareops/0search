@@ -5,15 +5,14 @@ import Connector from '../../lib/0chain-connector';
 import logger from '../../lib/logger';
 import { FETCH_MISSING_BLOCKS_PROCESS } from '../constants';
 import Block from '../../entities/block.entity';
-import Fetcher from '../../ledger-sync/fetcher';
 import config from 'config'
+import { getLatestBlockNumInDb } from '../../ledger-syncer/processors/fetchLatestBlocks'
 
 export const pollMissingBlocks = (connector: Connector) => {
   fetchMissingBlocksQueue.process(FETCH_MISSING_BLOCKS_PROCESS, async (job: any, jobDone: any) => {
     logger.info('Fetching missing blocks ===>');
 
-    const fetcher = new Fetcher(connector);
-    let latestBlockInDB = await fetcher.getLatestBlockNumInDb();
+    let latestBlockInDB = await getLatestBlockNumInDb();
     let latestBlockInChain = await connector.getBlockNumInChain();
     let blockRound = config.get('worker.startFromBlock');
 

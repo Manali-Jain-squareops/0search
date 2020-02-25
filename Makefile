@@ -63,7 +63,7 @@ killstart:
 	node --inspect babel-loader.js ./src/server
 
 start-ledger-sync:
-	node --inspect babel-loader.js ./src/sync
+	node --inspect babel-loader.js ./src/ledger-syncer
 
 start-worker:
 	node --inspect babel-loader.js ./src/worker
