@@ -19,6 +19,10 @@ export const pollMissingBlocks = (connector: Connector) => {
 
     while (scanCount) {
       if (!(await checkBlockPresentInDB(blockRound))) {
+        if (blockRound === 1){
+          scanCount = 0
+          continue
+        }
         logger.info(`Fetching block details for block round: ${blockRound}`);
         const [blockDetails, err] = await of(connector.getBlockDataByRound(blockRound));
         if (err) {
