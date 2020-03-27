@@ -1,8 +1,9 @@
 import jsClientSdk from 'js-client';
+import bls from 'bls-wasm'
 
 export default class Connector {
   constructor(config) {
-    jsClientSdk.init(config);
+    jsClientSdk.init(config, bls);
   }
 
   async getBlockNumInChain(): Promise<number> {
