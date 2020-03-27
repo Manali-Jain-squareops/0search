@@ -44,7 +44,8 @@ mongo-master    /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
 mongo-slave-1   /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
 mongo-slave-2   /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
 redis           docker-entrypoint.sh redis ...   Up      6379/tcp
-worker          docker-entrypoint.sh make  ...   Up                 
+worker          docker-entrypoint.sh make  ...   Up         
+scanner         docker-entrypoint.sh make  ...   Up                                    
 ```
 
 ### Stop Services
@@ -74,12 +75,6 @@ We have defined a config variable which can be updated to the number from where 
 
 Scanner service also runs in the background and do a periodic scan of missing blocks by going towards the worker from the ledger-sync. It basically fills the gap in between the 2. It checks the latest block in the database (fetched and added by the ledger-sync) and then start going backwards and checks each round of block if it is present in the database or not and adds it in the database. We have defined a scanner scan limit variable in the config which can be changed to define the span of missing blocks to be fetched.
 
-We need to start this service explicitly by running the command:
-```docker-compose up -d scanner```
-
-It will start the scanner service and the logs can be seen by doing a 
-```docker-compose logs -f scanner``` 
-
 ### Mongo Replica Set
 
 A replica set is a group of mongod instances that maintain the same data set. A replica set contains several data bearing nodes and optionally one arbiter node.
@@ -100,6 +95,7 @@ Below-mentioned REST APIs are implemented:
 - `/block`: Get a block by its hash or round
 - `/block/latest`: Get information of latest block
 - `/stats`: API to get current Stat of Chain
+- `/stats/network-details`: API to get network details of Chain (miners, blobbers, sharders)
 - `/docs`: Used for [swagger](https://swagger.io/) based API documentation
 
 ### Modular Codebase
