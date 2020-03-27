@@ -25,6 +25,10 @@ export default class Connector {
     return await jsClientSdk.getChainStats();
   }
 
+  async getBlobbersFromSharders(): Promise<any> {
+    return await jsClientSdk.getAllBlobbers();
+  } 
+
   // TODO: This is a dummy function to verify the transaction payload by hitting the blockchain and comparing the recived file. As of now I am unable to do this via the SDK
   async verifyFile(fileData): Promise<boolean> {
     const blobbers = await jsClientSdk.getAllBlobbers();

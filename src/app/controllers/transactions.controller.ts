@@ -103,31 +103,6 @@ class TransactionController {
     const metadata = Pagination.preparePaginationMetaData(req.query.page, req.query.size, count);
     return Responder.success(res, { metadata, content: transactions });
   }
-
-  /**
-   * @module TransactionController
-   * @function signTransaction To sign transactions
-   * @param {Object} req Express request object
-   * @param {Object} res Express response object
-   * @returns {undefined} Sends a signed string of a transaction hash
-   */
-  static signTransaction(req, res) {
-    const { transactionHash, private_key } = req.body
-    const response = TransactionService.signTransaction(transactionHash, private_key);
-    return Responder.success(res, { signedTransaction: response });
-  }
-
-  /**
-   * @module TransactionController
-   * @function signTransaction To get public and private keys using bls
-   * @param {Object} req Express request object
-   * @param {Object} res Express response object
-   * @returns {undefined} Sends an object with public and private keys
-   */
-  static getKeys(req, res) {
-    const response = TransactionService.getPublicAndPrivateKeys();
-    return Responder.success(res, { response });
-  }
 }
 
 export default TransactionController;

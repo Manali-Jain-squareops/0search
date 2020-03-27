@@ -9,6 +9,7 @@ const initStatsRoutes = () => {
   const StatsRouter = express.Router()
 
   StatsRouter.get('/', StatsController.getCurrentStats)
+  StatsRouter.get('/network-details', StatsController.getNetworkDetails)
   return StatsRouter
 }
 

@@ -19,6 +19,18 @@ class StatsController {
     const stats = await StatsService.getCurrentStats();
     return Responder.success(res, stats);
   }
+
+  /**
+   * @module StatsController
+   * @function getNetworkDetails To fetch current stats if chain
+   * @param {Object} req Express request object
+   * @param {Object} res Express response object
+   * @returns {undefined} Sends response with chain stats
+   */
+  static async getNetworkDetails(req, res) {
+    const networkDetails = await StatsService.getNetworkDetails();
+    return Responder.success(res, networkDetails);
+  }
 }
 
 export default StatsController;

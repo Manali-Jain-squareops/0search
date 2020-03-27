@@ -16,7 +16,6 @@
   "dependencies": {
     "@hapi/boom": "^8.0.1",
     "await-of": "^1.2.0",
-    "bls-wasm": "git+https://github.com/herumi/bls-wasm.git",
     "body-parser": "^1.19.0",
     "bull": "^3.12.1",
     "check-dependencies": "^1.1.0",
