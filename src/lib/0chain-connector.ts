@@ -1,4 +1,4 @@
-import jsClientSdk from 'js-client';
+import jsClientSdk from '0chain';
 import bls from 'bls-wasm'
 
 export default class Connector {
