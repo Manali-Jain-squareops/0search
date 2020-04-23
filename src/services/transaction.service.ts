@@ -2,8 +2,7 @@ import Boom from '@hapi/boom';
 import logger from '../lib/logger';
 import { mongoose } from '../lib/mongoose';
 import Transaction from '../entities/transaction.entity';
-import Confirmation from '../entities/confirmation.entity';
-import { ITransactionData, IConfirmationData } from '../interfaces';
+import { ITransactionData } from '../interfaces';
 
 class TransactionService {
   IsJsonString = (str: string) => {
@@ -36,23 +35,23 @@ class TransactionService {
     }
   };
 
-  addConfirmationDetails = async (txnHash: string, confirmations: IConfirmationData) => {
-    const session = await mongoose.startSession();
-    await session.startTransaction();
-    const opts = { session, returnOriginal: false };
-    try {
-      await Confirmation.create([confirmations], opts);
-      await Transaction.updateOne({ hash: txnHash }, { confirmation_fetched: true }, opts);
+  // addConfirmationDetails = async (txnHash: string, confirmations: IConfirmationData) => {
+  //   const session = await mongoose.startSession();
+  //   await session.startTransaction();
+  //   const opts = { session, returnOriginal: false };
+  //   try {
+  //     await Confirmation.create([confirmations], opts);
+  //     await Transaction.updateOne({ hash: txnHash }, { confirmation_fetched: true }, opts);
 
-      logger.info(`Added confirmation details for txn: ${txnHash}`);
-      await session.commitTransaction();
-      await session.endSession();
-    } catch (err) {
-      await session.abortTransaction();
-      await session.endSession();
-      logger.error(`Error adding confirmation for txn: ${txnHash}`, err);
-    }
-  };
+  //     logger.info(`Added confirmation details for txn: ${txnHash}`);
+  //     await session.commitTransaction();
+  //     await session.endSession();
+  //   } catch (err) {
+  //     await session.abortTransaction();
+  //     await session.endSession();
+  //     logger.error(`Error adding confirmation for txn: ${txnHash}`, err);
+  //   }
+  // };
 
   getIncompleteTransactions = async () => {
     try {

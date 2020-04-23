@@ -29,8 +29,7 @@ class TransactionController {
       });
     }
 
-    const confirmation = await TransactionService.getTransactionConfirmation(req.params.hash);
-    return Responder.success(res, Object.assign(transaction, { confirmation }));
+    return Responder.success(res, Object.assign(transaction));
   }
 
   /**
