@@ -8,22 +8,34 @@
   "redis_url": "redis://redis:6379",
   "blockchainConfig": {
     "miners": [
-      "http://one.devnet-0chain.net:31071/",
-      "http://one.devnet-0chain.net:31072/",
-      "http://one.devnet-0chain.net:31073/",
-      "http://one.devnet-0chain.net:31074/"
+      "http://one.devnet-0chain.net:31201/",
+      "http://one.devnet-0chain.net:31202/",
+      "http://one.devnet-0chain.net:31203/",
+      "http://one.devnet-0chain.net:31204/",
+      "http://one.devnet-0chain.net:31205/",
+      "http://one.devnet-0chain.net:31206/"
     ],
     "sharders": [
-      "http://one.devnet-0chain.net:31171/",
-      "http://one.devnet-0chain.net:31172/"
+      "http://one.devnet-0chain.net:31101/",
+      "http://one.devnet-0chain.net:31102/",
+      "http://one.devnet-0chain.net:31103/"
     ],
-    "chain_id" :   "0afc093ffb509f059c55478bc1a60351cef7b4e9c008a53a6cc8241ca8617dfe",
-    "clusterName" : "0chain-local-cluster",
-    "proxyServerUrl" : "http://localhost:9082",
+    "readPrice": {
+      "min": 0,
+      "max": 10000000000
+    },
+    "writePrice": {
+      "min": 0,
+      "max": 10000000000
+    },
+    "tokenLock": 10000000000,
+    "chain_id": "0afc093ffb509f059c55478bc1a60351cef7b4e9c008a53a6cc8241ca8617dfe",
+    "clusterName": "0chain-local-cluster",
+    "proxyServerUrl": "http://localhost:9082",
     "backendUrl": "http://localhost:3000/",
     "dataSource": "block-chain",
-    "transaction_timeout" : 20,
-    "state " : true
+    "transaction_timeout": 20,
+    "state ": true
   },
   "pagination": {
     "default_page": 1,
