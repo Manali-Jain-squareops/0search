@@ -5,21 +5,25 @@ const transactionSchema = new Schema({
   hash: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    index: true
   },
   block_hash: {
     type: String,
-    required: true
+    required: true,
+    index: true
   },
   version: {
     type: String,
     required: true
   },
   client_id: {
-    type: String
+    type: String,
+    index: true
   },
   to_client_id: {
-    type: String
+    type: String,
+    index: true
   },
   chain_id: {
     type: String,
@@ -56,10 +60,12 @@ const transactionSchema = new Schema({
     type: Boolean
   },
   metadata: {
-    type: Object
+    type: Object,
+    index: true
   },
   parsed_output: {
-    type: Object
+    type: Object,
+    index: true
   },
   created_at: {
     type: Date,
