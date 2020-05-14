@@ -2,7 +2,7 @@
   "app": "0block-recorder",
   "port": 3000,
   "mongodb": {
-    "url": "mongodb://mongo-0/block-recorder?replicaSet=rs0",
+    "url": "mongodb://mongodb:27017/block-recorder",
     "pool_size": 2
   },
   "redis_url": "redis://redis:6379",
@@ -40,19 +40,5 @@
   "pagination": {
     "default_page": 1,
     "default_page_size": 10
-  },
-  "worker": {
-    "reattempts": 5,
-    "backoffDelay": 5000,
-    "pollingDuration": 3000,
-    "jobConcurrency": 10,
-    "startFromBlock": 2
-  },
-  "scanner": {
-    "reattempts": 5,
-    "backoffDelay": 5000,
-    "pollingDuration": 5000,
-    "jobConcurrency": 10,
-    "scanLimit": 50
   }
 }
