@@ -1,43 +1,12 @@
 version: "3"
 
-volumes:
-  redis-data:
-  mongo-data-0:
-  mongo-data-1:
-  mongo-data-2:
-
+networks:
+    default:
+      driver: bridge
+    testnet0:
+      external: true
+      
 services:
-  mongo-0:
-    image: mongo
-    container_name: mongo-master
-    volumes:
-      - mongo-data-0:/data/db
-    restart: always
-    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
-
-  mongo-1:
-    image: mongo
-    container_name: mongo-slave-1
-    volumes:
-      - mongo-data-1:/data/db
-    restart: always
-    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
-
-  mongo-2:
-    image: mongo
-    container_name: mongo-slave-2
-    volumes:
-      - mongo-data-2:/data/db
-    restart: always
-    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
-
-  redis:
-    image: redis
-    container_name: redis
-    command: ['redis-server', '--appendonly', 'yes']
-    volumes:
-      - redis-data:/data
-    restart: always
 
   backend:
     build:
@@ -49,43 +18,11 @@ services:
       - /opt/node_modules
       - .:/opt
     restart: always
+    networks:
+      default:
+      testnet0:
     ports:
       - 3000:3000
     command: ["make", "dev-server"]
 
-  ledger-sync:
-    build:
-      context: .
-      args:
-        - NODE_ENV=development
-    container_name: ledger-sync
-    volumes:
-      - /opt/node_modules
-      - .:/opt
-    restart: always
-    command: ["make", "dev-ledger-sync"]
-
-  worker:
-    build:
-      context: .
-      args:
-        - NODE_ENV=development
-    container_name: worker
-    volumes:
-      - /opt/node_modules
-      - .:/opt
-    restart: always
-    command: ["make", "dev-worker"]
-  
-  scanner:
-    build:
-      context: .
-      args:
-        - NODE_ENV=development
-    container_name: scanner
-    volumes:
-      - /opt/node_modules
-      - .:/opt
-    restart: always
-    command: ["make", "dev-scanner"]
 

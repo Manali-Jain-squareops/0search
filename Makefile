@@ -62,37 +62,14 @@ check-install-deps:
 killstart:
 	node --inspect babel-loader.js ./src/server
 
-start-ledger-sync:
-	node --inspect babel-loader.js ./src/ledger-syncer
-
-start-worker:
-	node --inspect babel-loader.js ./src/worker
-
-start-scanner:
-	node --inspect babel-loader.js ./src/scanner
-
 dev-server: check-install-deps
 	npx concurrently --names "SERVER,LINT" -c "bgBlue.bold,bgMagenta.bold" "NODE_ENV=development npx nodemon --exec 'make killstart'"
-
-dev-ledger-sync: check-install-deps
-	npx concurrently --names "SERVER,LINT" -c "bgBlue.bold,bgMagenta.bold" "NODE_ENV=development npx nodemon --exec 'make start-ledger-sync'"
-
-dev-worker: check-install-deps
-	npx concurrently --names "SERVER,LINT" -c "bgBlue.bold,bgMagenta.bold" "NODE_ENV=development npx nodemon --exec 'make start-worker'"
-
-dev-scanner: check-install-deps
-	npx concurrently --names "SERVER,LINT" -c "bgBlue.bold,bgMagenta.bold" "NODE_ENV=development npx nodemon --exec 'make start-scanner'"
 
 dev-lint:
 	npx nodemon --exec 'make lint'
 
-start-dependencies:
-	@docker-compose up -d mongo-0 mongo-1 mongo-2 redis
-	@sleep 3
-	@docker exec -it mongo-master mongo --eval 'rs.initiate({"_id":"rs0","members":[{"_id":0,"host":"mongo-0:27017"},{"_id":1,"host":"mongo-1:27017"},{"_id":2,"host":"mongo-2:27017"}]})'
-
-start-dev-services: start-dependencies
-	@docker-compose up -d ledger-sync backend worker scanner
+start-dev-services:
+	@docker-compose up -d backend
 
 stop-services:
 	@docker-compose down
