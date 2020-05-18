@@ -26,10 +26,12 @@ export class StatsService {
   static async getNetworkDetails() {
     const blockchainConfig = config.get('blockchainConfig');
     const connector = new Connector(blockchainConfig);
+    const blobbersList = await connector.getBlobbersFromSharders()
+    const blobberUrls = blobbersList.Nodes.map(blobber => blobber.url)
     return {
       miners: blockchainConfig['miners'],
       sharders: blockchainConfig['sharders'],
-      blobbers: connector.getBlobbersFromSharders()
+      blobbers: blobberUrls
     };
   }
 }
