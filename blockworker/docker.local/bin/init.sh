@@ -1,0 +1,1 @@
+mkdir -p docker.local/blockworker/log

@@ -69,7 +69,7 @@ dev-lint:
 	npx nodemon --exec 'make lint'
 
 start-dev-services:
-	@docker-compose up -d backend
+	@docker-compose up -d mongodb blockworker backend
 
 stop-services:
 	@docker-compose down

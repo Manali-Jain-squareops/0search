@@ -21,8 +21,43 @@ services:
     networks:
       default:
       testnet0:
+    depends_on:
+      - blockworker
     ports:
       - 3000:3000
     command: ["make", "dev-server"]
 
+  mongodb:
+    image: mongo
+    volumes:
+      - mongodata:/data/db
+    networks:
+      default:
+      testnet0:
+    ports:
+      - "27017:27017"
 
+  blockworker:
+    environment:
+      - DOCKER=true
+    build:
+      context: ./blockworker
+      dockerfile: ./docker.local/Dockerfile
+    depends_on:
+      - mongodb
+    links:
+      - mongodb:mongodb
+    volumes:
+      - ./blockworker/docker.local/config:/blockworker/config
+      - ./blockworker/log:/blockworker/log
+    ports:
+      - "9091:9091"
+    networks:
+      default:
+      testnet0:
+        ipv4_address: 198.18.0.98
+    command: ./bin/blockworker --deployment_mode 0 --keys_file /blockworker/config/blockworker_keys.txt
+
+volumes:
+  config:
+  mongodata:
