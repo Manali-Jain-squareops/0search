@@ -46,11 +46,9 @@ export class TransactionService {
       switch (searchText.length) {
         case 64:
           query['$or'] = [
-            { 'metadata.MetaData.LookupHash': searchText },   //Searching via 'lookup Hash' field
+            { 'metadata.MetaData.LookupHash': searchText }, //Searching via 'lookup Hash' field
             { 'client_id': searchText },                    //Searching via 'from' field
             { 'to_client_id': searchText },                 //Searching via 'to' field
-            { 'parsed_output.blobber_id': searchText },     //Searching via 'blobber Id' field
-            { 'parsed_output.blobbers.id': searchText },    //Searching via 'blobbers' field
             { 'parsed_output.allocation_id': searchText }   //Searching via 'allocation Id' field
           ]
           break;
@@ -62,7 +60,6 @@ export class TransactionService {
         default:
           query['$or'] = [
             { 'metadata.MetaData.Name': searchText },       //Searching via 'name' field
-            { 'metadata.MetaData.Path': searchText },       //Searching via 'path' field
           ]
       }
     }
@@ -72,8 +69,8 @@ export class TransactionService {
       .skip(skip)
       .limit(limit);
 
-    const count = await Transaction.find(query).count();
-    return { transactions, count };
+    // const count = await Transaction.find(query).count();
+    return { transactions };
   }
 }
 

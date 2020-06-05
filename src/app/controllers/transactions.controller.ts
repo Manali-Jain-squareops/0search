@@ -57,14 +57,14 @@ class TransactionController {
       return Responder.operationFailed(res, paginationError.message);
     }
 
-    const { transactions, count } = await TransactionService.searchTransactions({
+    const { transactions } = await TransactionService.searchTransactions({
       query: sanitizedQuery,
       skip: params.skip,
       limit: params.limit
     });
 
-    const metadata = Pagination.preparePaginationMetaData(req.query.page, req.query.size, count);
-    return Responder.success(res, { metadata, content: transactions });
+    // const metadata = Pagination.preparePaginationMetaData(req.query.page, req.query.size, count);
+    return Responder.success(res, { content: transactions });
   }
 
   /**
@@ -93,14 +93,14 @@ class TransactionController {
       return Responder.operationFailed(res, paginationError.message);
     }
 
-    const { transactions, count } = await TransactionService.searchTransactions({
+    const { transactions } = await TransactionService.searchTransactions({
       query: sanitizedQuery,
       skip: params.skip,
       limit: params.limit
     });
 
-    const metadata = Pagination.preparePaginationMetaData(req.query.page, req.query.size, count);
-    return Responder.success(res, { metadata, content: transactions });
+    // const metadata = Pagination.preparePaginationMetaData(req.query.page, req.query.size, count);
+    return Responder.success(res, { content: transactions });
   }
 }
 
