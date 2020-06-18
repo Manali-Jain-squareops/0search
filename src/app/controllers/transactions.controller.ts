@@ -5,7 +5,7 @@ import { Pagination } from '../../utils/pagination';
 import { validateQuery } from '../../utils/validateQuery';
 import { TransactionService } from '../services/transaction.service';
 
-const SEARCH_TRANSACTIONS_SUPPORTED_QUERY_PARAMS = ['hash', 'block_hash', 'metadata', 'client_id'];
+const SEARCH_TRANSACTIONS_SUPPORTED_QUERY_PARAMS = ['hash', 'block_hash', 'metadata', 'client_id', 'to_client_id'];
 
 /**
  * This class provide controllers to fetch details regarding transactions.
