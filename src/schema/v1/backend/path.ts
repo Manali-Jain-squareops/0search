@@ -57,6 +57,14 @@ export default {
           }
         },
         {
+          name: 'metadata',
+          in: 'query',
+          description: 'Search transaction by transaction\'s metadata (lookup hash, from, to, allocation Id, content hash, name)',
+          schema: {
+            type: 'string'
+          }
+        },
+        {
           name: 'page',
           in: 'query',
           description: 'Page number',
@@ -81,6 +89,28 @@ export default {
     }
   },
 
+  '/transactions/block-hash': {
+    get: {
+      tags: ['Transactions'],
+      summary: 'API to get transactions by a block\'s hash',
+      parameters: [
+        {
+          name: 'hash',
+          in: 'query',
+          description: 'Hash of the block',
+          schema: {
+            type: 'string'
+          }
+        }
+      ],
+      responses: {
+        '200': {
+          description: 'Returns list of transactions'
+        }
+      }
+    }
+  },
+
   '/stats': {
     get: {
       tags: ['Statistics'],
@@ -88,6 +118,18 @@ export default {
       responses: {
         '200': {
           description: 'Returns Statistics'
+        }
+      }
+    }
+  },
+
+  '/stats/network-details': {
+    get: {
+      tags: ['Statistics'],
+      summary: 'API to get network details of the chain (miners, sharders, blobbers)',
+      responses: {
+        '200': {
+          description: 'Returns chain network details'
         }
       }
     }

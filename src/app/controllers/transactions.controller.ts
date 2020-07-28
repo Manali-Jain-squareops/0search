@@ -5,7 +5,7 @@ import { Pagination } from '../../utils/pagination';
 import { validateQuery } from '../../utils/validateQuery';
 import { TransactionService } from '../services/transaction.service';
 
-const SEARCH_TRANSACTIONS_SUPPORTED_QUERY_PARAMS = ['hash', 'block_hash', 'metadata', 'client_id'];
+const SEARCH_TRANSACTIONS_SUPPORTED_QUERY_PARAMS = ['hash', 'block_hash', 'metadata', 'client_id', 'to_client_id'];
 
 /**
  * This class provide controllers to fetch details regarding transactions.
@@ -57,14 +57,14 @@ class TransactionController {
       return Responder.operationFailed(res, paginationError.message);
     }
 
-    const { transactions, count } = await TransactionService.searchTransactions({
+    const { transactions } = await TransactionService.searchTransactions({
       query: sanitizedQuery,
       skip: params.skip,
       limit: params.limit
     });
 
-    const metadata = Pagination.preparePaginationMetaData(req.query.page, req.query.size, count);
-    return Responder.success(res, { metadata, content: transactions });
+    // const metadata = Pagination.preparePaginationMetaData(req.query.page, req.query.size, count);
+    return Responder.success(res, { content: transactions });
   }
 
   /**
@@ -93,14 +93,14 @@ class TransactionController {
       return Responder.operationFailed(res, paginationError.message);
     }
 
-    const { transactions, count } = await TransactionService.searchTransactions({
+    const { transactions } = await TransactionService.searchTransactions({
       query: sanitizedQuery,
       skip: params.skip,
       limit: params.limit
     });
 
-    const metadata = Pagination.preparePaginationMetaData(req.query.page, req.query.size, count);
-    return Responder.success(res, { metadata, content: transactions });
+    // const metadata = Pagination.preparePaginationMetaData(req.query.page, req.query.size, count);
+    return Responder.success(res, { content: transactions });
   }
 }
 

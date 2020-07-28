@@ -59,12 +59,20 @@ const transactionSchema = new Schema({
   confirmation_fetched: {
     type: Boolean
   },
-  metadata: {
-    type: Object,
+  lookup_hash: {
+    type: String,
     index: true
   },
-  parsed_output: {
-    type: Object,
+  content_hash: {
+    type: String,
+    index: true
+  },
+  name: {
+    type: String,
+    index: true
+  },
+  allocation_id: {
+    type: String,
     index: true
   },
   created_at: {

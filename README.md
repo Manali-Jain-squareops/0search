@@ -1,6 +1,16 @@
-# OChain Block Fetcher
+# 0Chain Block Recorder
 
-This is a module that is responsible for fetching all the relvenat data from the 0chain and store it in a noSql database like mongoDb for faster querying and data caching purposes.
+This is a module that is responsible for providing all the APIs that can be used to query the database created by the blockworker. Blockworker is responsible for adding data into the database. This service is used to connect to the blockworker database and then used to query the stored info in the database with the help of below mentioned REST APIs.
+
+You can find the blockworker readme here. ()
+
+## Table of Contents
+
+- [Requirements](#requirements)
+- [Start Services](#start-services)
+- [Stop Services](#stop-services)
+- [Swagger Documentation](#swagger-documentation)
+- [REST APIs](#rest-apis)
 
 ## Setup
 
@@ -10,6 +20,21 @@ Tools required to run this project:
 
 - Docker version 18.09.1, build 4c52b90
 - docker-compose version 1.23.2, build 1110ad01
+
+### Connecting blockworker database
+
+Go to the development.json file and check if the mongourl is correct or not, it would be similar to the below config:
+
+```
+"mongodb": {
+    "url": "mongodb://mongodb:27017/block-recorder",
+    "pool_size": 2
+  },
+```
+
+The mongourl mentioned here would be the url of the blockworker's mongo database.
+
+Blockworker's readme (https://github.com/0chain/blockworker/blob/master/README.md).
 
 ### Start Services
 
@@ -25,9 +50,9 @@ Setup Services:
 $ make start-dev-services
 ```
 
-It might take a couple of minutes to build/start all services.
+It might take a couple of minutes to build/start the backend service.
 
-Check if services has been started successfully:
+Check if service has been started successfully:
 
 ```
 $ docker-compose ps
@@ -38,19 +63,12 @@ Output should be like:
 ```
     Name                   Command               State           Ports
 -------------------------------------------------------------------------------
-backend         docker-entrypoint.sh make  ...   Up      0.0.0.0:3000->3000/tcp
-ledger-sync     docker-entrypoint.sh make  ...   Up
-mongo-master    /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
-mongo-slave-1   /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
-mongo-slave-2   /usr/bin/mongod --bind_ip_ ...   Up      27017/tcp
-redis           docker-entrypoint.sh redis ...   Up      6379/tcp
-worker          docker-entrypoint.sh make  ...   Up         
-scanner         docker-entrypoint.sh make  ...   Up                                    
+backend         docker-entrypoint.sh make  ...   Up      0.0.0.0:3000->3000/tcp                   
 ```
 
 ### Stop Services
 
-To stop all services:
+To stop the service:
 
 ```
 $ docker-compose down
@@ -60,30 +78,9 @@ $ docker-compose down
 
 Open `http://localhost:3000/docs/` on browser to view
 
-## Services and Features
-
-### Ledger Sync
-
-This service is responsible for fetching all the chain, blocks and transaction related data and storing it in the database. It starts fetching the latest finalized blocks along with the transactions from the chain and stores in the database. It checks the latest and put it in the database. A worker keeps running in the background to add the missing blocks in the database described next. 
-
-### Worker
-
-This service also fetches the blocks and transactions from the chain and put it in the database similarly to the ledger-sync. The only difference is it starts fetching blocks from round number 2 till it catches the blockchain. This is how, the missing blocks gets added in the database.
-We have defined a config variable which can be updated to the number from where the worker should start.
-
-### Scanner
-
-Scanner service also runs in the background and do a periodic scan of missing blocks by going towards the worker from the ledger-sync. It basically fills the gap in between the 2. It checks the latest block in the database (fetched and added by the ledger-sync) and then start going backwards and checks each round of block if it is present in the database or not and adds it in the database. We have defined a scanner scan limit variable in the config which can be changed to define the span of missing blocks to be fetched.
-
-### Mongo Replica Set
-
-A replica set is a group of mongod instances that maintain the same data set. A replica set contains several data bearing nodes and optionally one arbiter node.
-
-Currently, for development purpose I have used 3 mongod nodes.
-
 ### REST APIs
 
-Implemented REST APIs to get information of `Chain` stored in database by `ledger-sync`
+Implemented REST APIs to get information of `Chain` stored in the database.
 
 Below-mentioned REST APIs are implemented:
 
@@ -100,7 +97,7 @@ Below-mentioned REST APIs are implemented:
 
 ### Modular Codebase
 
-I have designed this codebase in such a way as to minimize dependencies between different modules. Ite enables to easily manage/maintain codebase. There are 3 different services running parallely that are dockerized and scalable. Also, I have kept the file data related codebase modular so that it does not affect the other codebase in case we agree on some major changes in that aspect.
+I have designed this codebase in such a way as to minimize dependencies between different modules. It enables to easily manage/maintain codebase.
 
 ### Metadata storage in the database for a transaction.
 

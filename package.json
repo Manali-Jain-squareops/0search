@@ -1,9 +1,9 @@
 {
   "name": "0BlockRecorder",
   "version": "1.0.0",
-  "description": "",
-  "author": "",
-  "license": "ISC",
+  "description": "A service to provide rest api endpoints to query the 0chain's database",
+  "author": "0chain",
+  "license": "MIT",
   "scripts": {
     "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
     "build": "npx babel . -d ./dist -s --copy-files  --extensions '.js,.jsx,.ts,.tsx' --verbose --ignore node_modules",
