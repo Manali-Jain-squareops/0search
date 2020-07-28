@@ -102,16 +102,6 @@ Below-mentioned REST APIs are implemented:
 
 I have designed this codebase in such a way as to minimize dependencies between different modules. Ite enables to easily manage/maintain codebase. There are 3 different services running parallely that are dockerized and scalable. Also, I have kept the file data related codebase modular so that it does not affect the other codebase in case we agree on some major changes in that aspect.
 
-## Limitations / Future Improvements
-
-- `Caching`: To cache response of APIs for faster GET operations and less Database queries
-- `Unit Testing`: To be implemented
-- `Integration Testing`: To be implemented
-- `Proper Exception Handling`: Needed to be made more fault tolerant
-- `Performance Test`: REST API load testing hasnt been done yet.
-- `Data Caching in database`: Feature that will be implemented
-- `Re-evaluate Database Indexes`: Needed to be improved
-
 ### Metadata storage in the database for a transaction.
 
 Currently, the metadata of a transaction is getting stored in the database as a single field of object type.
