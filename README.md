@@ -2,7 +2,7 @@
 
 This is a module that is responsible for providing all the APIs that can be used to query the database created by the blockworker. Blockworker is responsible for adding data into the database. This service is used to connect to the blockworker database and then used to query the stored info in the database with the help of below mentioned REST APIs.
 
-You can find the blockworker readme here. ()
+You can find the blockworker readme here. (https://github.com/0chain/blockworker/blob/master/README.md)
 
 ## Table of Contents
 
