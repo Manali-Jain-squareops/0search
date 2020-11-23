@@ -1,8 +1,8 @@
-# 0Chain Block Recorder
+# 0Search
 
-This is a module that is responsible for providing all the APIs that can be used to query the database created by the blockworker. Blockworker is responsible for adding data into the database. This service is used to connect to the blockworker database and then used to query the stored info in the database with the help of below mentioned REST APIs.
+This is a module that is responsible for providing all the APIs that can be used to query the database created by the 0block. 0block is responsible for adding data into the database. This service is used to connect to the 0block database and then used to query the stored info in the database with the help of below mentioned REST APIs.
 
-You can find the blockworker readme here. (https://github.com/0chain/blockworker/blob/master/README.md)
+You can find the 0block readme here. (https://github.com/0chain/0block/blob/master/README.md)
 
 ## Table of Contents
 
@@ -32,9 +32,9 @@ Go to the development.json file and check if the mongourl is correct or not, it 
   },
 ```
 
-The mongourl mentioned here would be the url of the blockworker's mongo database.
+The mongourl mentioned here would be the url of the 0block's mongo database.
 
-Blockworker's readme (https://github.com/0chain/blockworker/blob/master/README.md).
+0block's readme (https://github.com/0chain/0block/blob/master/README.md).
 
 ### Start Services
 
@@ -63,7 +63,7 @@ Output should be like:
 ```
     Name                   Command               State           Ports
 -------------------------------------------------------------------------------
-backend         docker-entrypoint.sh make  ...   Up      0.0.0.0:3000->3000/tcp                   
+backend         docker-entrypoint.sh make  ...   Up      0.0.0.0:3000->3000/tcp
 ```
 
 ### Stop Services
@@ -102,7 +102,7 @@ I have designed this codebase in such a way as to minimize dependencies between 
 ### Metadata storage in the database for a transaction.
 
 Currently, the metadata of a transaction is getting stored in the database as a single field of object type.
-Metadata field will be different for different types of transactions like for storage related transactions, it would be like 
+Metadata field will be different for different types of transactions like for storage related transactions, it would be like
 
 ```
 {
@@ -119,6 +119,7 @@ Metadata field will be different for different types of transactions like for st
   "EncryptedKey": ""
 }
 ```
+
 and for locking related transactions, metadata will have these attributes:
 
 ```
@@ -129,6 +130,7 @@ and for locking related transactions, metadata will have these attributes:
     }
   }
 ```
+
 for allocation transactions:
 
 ```
@@ -143,8 +145,9 @@ for allocation transactions:
     "size": 2147483648
 }
 ```
+
 The search is also updated as per the metadata coming from the blockchain in every transaction.
-A search in metadata field can be done by calling the search api with ```metadata```  query params. Search can be done on the following fields:
+A search in metadata field can be done by calling the search api with `metadata` query params. Search can be done on the following fields:
 
 ```
 1. File name
