@@ -78,7 +78,8 @@ const transactionSchema = new Schema({
   created_at: {
     type: Date,
     default: Date.now,
-    required: true
+    required: true,
+    index: true
   },
   updated_at: {
     type: Date,
