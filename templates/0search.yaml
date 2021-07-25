@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    {{- include "0helm-0search.labels" $ | nindent 4 }}
+  namespace: {{ $.Values.zsearch.namespace }}
+
+spec:
+  containers:
+  - command:
+    - make
+    - dev-server
+    env:
+      {{- range $key, $value := $.Values.zsearch.Env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+      {{- end }}
+    image: {{ $.Values.zsearch.Image.repository }}:{{ $.Values.zsearch.Image.tag }}
+    imagePullPolicy: Always
+    name: recorder
+    ports:
+    - containerPort: {{ $.Values.zsearch.Service.targetPort }}
+      protocol: TCP
+    resources:
+      {{- toYaml $.Values.zsearch.Resources | nindent 12 }}
+    volumeMounts:
+    - mountPath: /opt/config/development.json
+      name: recorder-settings
+      subPath: development.json
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-8gxdl
+      readOnly: true
+  {{- with $.Values.zsearch.imagePullSecrets }}
+  imagePullSecrets:
+    {{- toYaml . | nindent 8 }}
+  {{- end }}
+  restartPolicy: Always
+  volumes:
+  - configMap:
+      defaultMode: 493
+      name: recorder-settings
+    name: recorder-settings
+  - name: default-token-8gxdl
+    secret:
+      defaultMode: 420
+      secretName: default-token-8gxdl

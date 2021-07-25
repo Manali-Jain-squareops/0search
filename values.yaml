@@ -1,0 +1,76 @@
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+zsearch:
+  replicaCount: 1
+  namespace: input
+  host: grpc.0chain.net
+  tier: prod
+
+  SettingsConfigmap:
+    logging:
+      level: "info"
+      console: "true"
+    serverChain:
+      id: "0afc093ffb509f059c55478bc1a60351cef7b4e9c008a53a6cc8241ca8617dfe"                  #Input this field
+      signatureScheme: "bls0chain"
+    port: "9091"
+    mongo:
+      url: mongodb://mongo-0.mongo.${cluster}:27017 # Input this field
+      dbName: block-recorder
+      poolSize: 2
+
+  Image:
+    repository: 0chaindev/0search
+    pullPolicy: Always
+    tag: latest
+
+  imagePullSecrets: 
+    - name: regcred
+
+  nameOverride: ""
+
+  fullnameOverride: ""
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  Env:
+    DOCKER: "true"
+
+  Resources:
+    requests:
+      cpu: "50m"
+      memory: "50Mi"
+    limits:
+      cpu: "100m"
+      memory: "100Mi"
+
+  Service:
+    name: "0search"
+    type: NodePort
+    port: 80
+    targetPort: 9091
+
+  recorderService:
+    name: "recorder"
+    type: NodePort
+    port: 80
+    targetPort: 3000
+

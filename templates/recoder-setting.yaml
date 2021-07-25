@@ -1,0 +1,47 @@
+apiVersion: v1
+data:
+  development.json: |-
+    {
+      "app": "0block-recorder",
+      "port": 3000,
+      "mongodb": {
+        "url": "mongodb://mongo-0.mongo.test:27017/block-recorder",
+        "pool_size": 2
+      },
+      "redis_url": "redis://redis-recorder:6379",
+      "blockchainConfig": {
+        "miners": [
+           "https://test.0chain.net/miner01/",
+           "https://test.0chain.net/miner02/",
+           "https://test.0chain.net/miner03/"
+        ],
+        "sharders": [
+           "https://test.0chain.net/sharder01/",
+           "https://test.0chain.net/sharder02/"
+        ],
+        "readPrice": {
+          "min": 0,
+          "max": 10000000000
+        },
+        "writePrice": {
+          "min": 0,
+          "max": 10000000000
+        },
+        "tokenLock": 10000000000,
+        "chain_id": "0afc093ffb509f059c55478bc1a60351cef7b4e9c008a53a6cc8241ca8617dfe",
+        "clusterName": "test",
+        "proxyServerUrl" : "http://zproxy:31082",
+        "backendUrl": "http://worker",
+        "dataSource": "database",
+        "transaction_timeout": 20,
+        "state ": true
+      },
+      "pagination": {
+        "default_page": 1,
+        "default_page_size": 10
+      }
+    }
+kind: ConfigMap
+metadata:
+  name: recorder-settings
+  namespace: {{ $.Values.zsearch.namespace }}

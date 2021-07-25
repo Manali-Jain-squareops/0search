@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- include "0helm-0search.labels" $ | nindent 4 }}
+  name: recorder
+  namespace: {{ $.Values.zsearch.namespace }}
+spec:
+  ports:
+  - name: {{ $.Values.zsearch.recorderService.name }}  
+    port: {{ $.Values.zsearch.recorderService.port }}
+    targetPort: {{ $.Values.zsearch.recorderService.targetPort }}
+  selector:
+    app: recorder
+    tier: {{ $.Values.zsearch.tier }}
