@@ -21,10 +21,6 @@ zsearch:
       id: "0afc093ffb509f059c55478bc1a60351cef7b4e9c008a53a6cc8241ca8617dfe"                  #Input this field
       signatureScheme: "bls0chain"
     port: "9091"
-    mongo:
-      url: mongodb://mongo-0.mongo.${cluster}:27017 # Input this field
-      dbName: block-recorder
-      poolSize: 2
 
   Image:
     repository: 0chaindev/0search

@@ -4,7 +4,7 @@ metadata:
   labels:
     {{- include "0helm-0search.labels" $ | nindent 4 }}
   namespace: {{ $.Values.zsearch.namespace }}
-
+  name: 0search
 spec:
   containers:
   - command:
