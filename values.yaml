@@ -7,22 +7,42 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-zsearch:
-  replicaCount: 1
-  namespace: input
-  host: grpc.0chain.net
-  tier: prod
+blockRecorder:
+  replicaCount: 1 
 
-  SettingsConfigmap:
-    logging:
-      level: "info"
-      console: "true"
-    serverChain:
-      id: "0afc093ffb509f059c55478bc1a60351cef7b4e9c008a53a6cc8241ca8617dfe"                  #Input this field
-      signatureScheme: "bls0chain"
-    port: "9091"
+  # namespace: helm
+  host: 0chain.net
 
-  Image:
+  recorderSettingsConfigmap:
+    app: "0block-recorder"
+    port: "3000"
+    minerList: 3
+    sharderList: 2
+    readPrice:
+      min: 0
+      max: "10000000000"
+    writePrice:
+      min: 0
+      max: "10000000000"
+    blockchainConfig:
+      minersList: 3
+      shardersList: 2
+      readPrice:
+        min: 0
+        max: "10000000000"
+      writePrice:
+        min: 0
+        max: "10000000000"
+      tokenLock: "10000000000"
+      chain_id: "0afc093ffb509f059c55478bc1a60351cef7b4e9c008a53a6cc8241ca8617dfe"
+      dataSource: "database"
+      transaction_timeout: 20
+      state: "true"
+    pagination:
+      default_page: 1
+      default_page_size: 10
+
+  blockRecorderImage:
     repository: 0chaindev/0search
     pullPolicy: Always
     tag: latest
@@ -47,26 +67,25 @@ zsearch:
     # runAsNonRoot: true
     # runAsUser: 1000
 
-  Env:
+  recorderEnv:
     DOCKER: "true"
 
-  Resources:
+  blockRecorderResources:
     requests:
-      cpu: "50m"
-      memory: "50Mi"
-    limits:
       cpu: "100m"
       memory: "100Mi"
-
-  Service:
-    name: "0search"
-    type: NodePort
-    port: 80
-    targetPort: 9091
+    limits:
+      cpu: "300m"
+      memory: "300Mi"
 
   recorderService:
     name: "recorder"
     type: NodePort
     port: 80
-    targetPort: 3000
+    targetPort: "3000"
 
+  # nodeSelector: {}
+
+  # tolerations: []
+
+  # affinity: {}

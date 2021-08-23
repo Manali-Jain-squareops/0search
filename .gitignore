@@ -1,5 +1,27 @@
-# dependencies
-node_modules
-logs
-npm-debug.log
-temp
+.DS_Store
+
+code/go/0box.io/gosdk
+**/docker.local/0box*
+**/zbox/zbox/zbox
+**/pkg/
+./.idea
+*mocks*
+.idea
+*log*
+coverage.out
+.vscode
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+zblock.txt

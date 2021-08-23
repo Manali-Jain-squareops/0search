@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  annotations:
+  labels:
+    {{- include "0helm.labels" $ | nindent 4 }}-recorder-settings
+  creationTimestamp: null
+  name: recorder-settings
+data:
+  development.json: |-
+    {
+      "app": {{ $.Values.blockRecorder.recorderSettingsConfigmap.app | quote }},
+      "port": {{ $.Values.blockRecorder.recorderSettingsConfigmap.port | quote }},
+      "mongodb": {
+        "url": "mongodb://{{ $.Chart.Name }}-mongo.{{ $.Release.Namespace }}:27017/block-recorder",
+        "pool_size": 2
+      },
+      "redis_url": "redis://{{ $.Chart.Name }}-redis-recorder:6379",
+      "blockchainConfig": {
+        "miners": [{{- $minerList := .Values.blockRecorder.recorderSettingsConfigmap.minerList | int }}
+                  {{- range $i := untilStep 1 $minerList 1 }}
+          "https://{{ $.Values.blockRecorder.host }}/miner0{{ $i }}/",
+          {{- end }}
+          "https://{{ $.Values.blockRecorder.host }}/miner0{{ $.Values.blockRecorder.recorderSettingsConfigmap.minerList | int }}/"
+        ],
+        "sharders": [{{- $sharderList := .Values.blockRecorder.recorderSettingsConfigmap.sharderList | int }}
+                  {{- range $i := untilStep 1 $sharderList 1 }}
+          "https://{{ $.Values.blockRecorder.host }}/sharder0{{ $i }}/",
+          {{- end }}
+          "https://{{ $.Values.blockRecorder.host }}/sharder0{{ $.Values.blockRecorder.recorderSettingsConfigmap.sharderList | int }}/"
+        ],
+        "readPrice": {
+          "min": {{ $.Values.blockRecorder.recorderSettingsConfigmap.blockchainConfig.readPrice.min }},
+          "max": {{ $.Values.blockRecorder.recorderSettingsConfigmap.blockchainConfig.readPrice.max }}
+        },
+        "writePrice": {
+          "min": {{ $.Values.blockRecorder.recorderSettingsConfigmap.blockchainConfig.writePrice.min }},
+          "max": {{ $.Values.blockRecorder.recorderSettingsConfigmap.blockchainConfig.writePrice.max }}
+        },
+        "tokenLock": {{ $.Values.blockRecorder.recorderSettingsConfigmap.blockchainConfig.tokenLock }},
+        "chain_id": {{ $.Values.blockRecorder.recorderSettingsConfigmap.blockchainConfig.chain_id | quote }},
+        "clusterName": {{ $.Release.Namespace | quote }},
+        "proxyServerUrl" : "http://{{ $.Chart.Name }}-zproxy:31082",
+        "backendUrl": "http://{{ $.Chart.Name }}-worker",
+        "dataSource": {{ $.Values.blockRecorder.recorderSettingsConfigmap.blockchainConfig.dataSource | quote }},
+        "transaction_timeout": {{ $.Values.blockRecorder.recorderSettingsConfigmap.blockchainConfig.transaction_timeout }},
+        "state ": {{ $.Values.blockRecorder.recorderSettingsConfigmap.blockchainConfig.state }}
+      },
+      "pagination": {
+        "default_page": {{ $.Values.blockRecorder.recorderSettingsConfigmap.pagination.default_page }},
+        "default_page_size": {{ $.Values.blockRecorder.recorderSettingsConfigmap.pagination.default_page_size }}
+      }
+    }

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- include "0helm.labels" $ | nindent 4 }}-recorder
+  name: {{ $.Chart.Name }}-recorder
+spec:
+  ports:
+  - name: {{ $.Values.blockRecorder.recorderService.name }}
+    port: {{ $.Values.blockRecorder.recorderService.port }}
+    targetPort: {{ $.Values.blockRecorder.recorderService.targetPort }}
+  type: {{ $.Values.blockRecorder.recorderService.type }}
+  selector:
+    {{- include "0helm.selectorLabels" $ | nindent 6 }}-recorder

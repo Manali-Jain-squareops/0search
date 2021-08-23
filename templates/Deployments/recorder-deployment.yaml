@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    {{- include "0helm.labels" $ | nindent 4 }}-recorder
+  name: {{ $.Chart.Name }}-recorder
+spec:
+  replicas: {{ $.Values.blockRecorder.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "0helm.selectorLabels" $ | nindent 6 }}-recorder
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        {{- include "0helm.labels" $ | nindent 8 }}-recorder
+    spec:
+      containers:
+        - image: {{ $.Values.blockRecorder.blockRecorderImage.repository }}:{{ $.Values.blockRecorder.blockRecorderImage.tag }}
+          imagePullPolicy: {{ $.Values.blockRecorder.blockRecorderImage.pullPolicy }}
+          name: {{ $.Release.Name }}-recorder
+          env:
+          {{- range $key, $value := $.Values.blockRecorder.recorderEnv }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+          {{- end }}
+          ports:
+            - containerPort: {{ $.Values.blockRecorder.recorderService.targetPort }}
+          command: ["make", "dev-server"]
+          resources:
+            {{- toYaml $.Values.blockRecorder.blockRecorderResources | nindent 12 }} 
+          volumeMounts:
+          - mountPath: /opt/config/development.json
+            name: recorder-settings
+            subPath: development.json
+      {{- with $.Values.blockRecorder.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+      - name: recorder-settings
+        configMap:
+          name: recorder-settings
+          defaultMode: 0755     
