@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       latest_tag:
-        description: 'type yes for building latest tag'
+        description: 'type yes for building latest / staging tag'
         default: 'no'
         required: true
 
@@ -13,7 +13,7 @@ env:
 
 jobs:
    zsearch:
-       runs-on: ubuntu-20.04
+       runs-on: [self-hosted, build]
        steps:
        - uses: actions/checkout@v2    
 
@@ -45,7 +45,7 @@ jobs:
          run: |
            if [[ "$PUSH_LATEST" == "yes" ]] && [[ "$BRANCH" == "master" ]]; then
               docker push $SEARCH_REGISTRY:latest
-           elif [[ "$BRANCH" == "staging" ]]; then
+           elif [[ "$PUSH_LATEST" == "yes" ]] && [[ "$BRANCH" == "staging" ]]; then
               docker push $SEARCH_REGISTRY:staging
            fi
          env:
